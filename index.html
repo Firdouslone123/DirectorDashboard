@@ -1,0 +1,2979 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Dashboard Admin</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.5.95/css/materialdesignicons.min.css">
+    <!-- Fonts for the sheet data table: IBM Plex Sans (header) + Nunito Sans (data rows) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@600;700&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;      /* no page scroll, x or y */
+  background: #222;
+}
+
+body {
+  padding: 0 20px 0 0; /* top: 0, right: 20px, bottom: 0, left: 0 */
+}
+
+/* From Uiverse.io by joe-watson-sbf */ 
+.flip-card {
+  perspective: 1000px;
+  font-family: sans-serif;
+height:26vh; border-radius:0px; overflow:hidden; cursor:pointer;
+ border:0px solid black;
+}
+
+.title {
+  font-size: 1.5em;
+  font-weight: 900;
+  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Only the face currently facing the viewer should be clickable - some
+   browsers still hit-test a backface-visibility:hidden face, which is what
+   made the back face's button unreliable once the flip had fully settled. */
+.flip-card-front {
+  pointer-events: auto;
+}
+.flip-card-back {
+  pointer-events: none;
+}
+.flip-card:hover .flip-card-front {
+  pointer-events: none;
+}
+.flip-card:hover .flip-card-back {
+  pointer-events: auto;
+}
+
+.flip-card-front, .flip-card-back {
+  box-shadow: 0 8px 14px 0 rgba(0,0,0,0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 0px solid coral;
+  border-radius: 0rem;
+}
+
+.flip-card-front {
+  background: linear-gradient(120deg, bisque 60%, rgb(255, 231, 222) 88%,
+     rgb(255, 211, 195) 40%, rgba(255, 127, 80, 0.603) 48%);
+  color: coral;
+}
+
+.flip-card-back {
+  background: red;
+  color: white;
+  transform: rotateY(180deg);
+  border-radius: 0px;
+
+  display: flex;
+  flex-direction: column;
+
+  /* Center horizontally and vertically */
+  justify-content: center;
+  align-items: center;
+
+  padding: 0px;
+  margin: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+
+  position: relative;
+}
+
+.flipback-title {
+  position: relative;
+  z-index: 2;
+  background: transparent;
+  color: #fff;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 900;
+  font-size: 1em;
+  text-align: center;
+  letter-spacing: 0.4px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.6);
+  padding: 0 8%;
+}
+
+.flipback-explore-btn {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  z-index: 2;
+  background: darkred;
+  color: white;
+  text-align: center;
+  font-size: 14px;
+  margin: 0;
+  padding: 6px 0;
+  border: none;
+  border-radius: 0px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+  cursor: pointer;
+}
+/* Stylish Button from Uiverse.io by ferlagher */ 
+button {
+  position: relative;
+ 
+  font-size: 1.0em;
+  padding: 0.3em 1.4em;
+  background: linear-gradient(
+    to right,
+    rgba(90, 0, 0, 0.5),
+    rgba(191, 4, 38, 0.5),
+    rgba(90, 0, 0, 0.5)
+  );
+  text-decoration: none;
+  border: none;
+  border-radius: 0.5em;
+  color:white;
+ font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 500;
+font-family: 'Times New Roman', Times, serif; font-weight: bold;
+  cursor: pointer;
+}
+
+button::before {
+  position: absolute;
+  content: '';
+  height: 0;
+  width: 0;
+  top: 0;
+  left: 0;
+  background: linear-gradient(135deg, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 50%, rgba(150,4,31,1) 50%, rgba(191,4,38,1) 60%);
+  border-radius: 0 0 0.5em 0;
+  box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
+  transition: 0.3s;
+}
+
+button:hover::before {
+  width: 2.2em;
+  height: 2.2em;
+}
+
+button:active {
+  box-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
+  transform: translate(0.1em, 0.1em);
+}
+.menu-item {
+  padding: 2px 2px;
+  cursor: pointer;
+  font-family: Times, sans-serif;
+  color: white;
+}
+
+.menu-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  background-color: transparent;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: black;
+  border-radius: 50%;
+  z-index: 2;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-size:20px;
+}
+
+.menu-icon i {
+  font-size: 18px;
+  color: #4CAF50;
+}
+
+.menu-title {
+  z-index: 2;
+ margin-left:-4px;
+}
+
+.menu-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  background: linear-gradient(135deg, rgba(11,61,101,1) 0%, rgba(11,61,101,1) 50%, rgba(0,140,180,1) 50%, rgba(0,168,204,1) 60%);
+  border-radius: 0 0 0.5em 0;
+  box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.3);
+  transition: width 0.3s, height 0.3s;
+  z-index: 3;
+}
+
+.menu-content:hover::before {
+  width: 2.2em;
+  height: 2.2em;
+}
+
+.menu-content:hover {
+  background: linear-gradient(
+    to right,
+    rgba(11,61,101,0.95),
+    rgba(0,168,204,0.95),
+    rgba(11,61,101,0.95)
+  );
+}
+
+.menu-content:active {
+  box-shadow: 0.2em 0.2em 0.3em rgba(0, 0, 0, 0.3);
+  transform: translate(0.1em, 0.1em);
+}
+
+.menu-content.active {
+  background: linear-gradient(
+    to right,
+    rgba(11,61,101,0.95),
+    rgba(0,168,204,0.95),
+    rgba(11,61,101,0.95)
+  );
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background-color: #1f1f1f;
+  position: fixed;
+  top: 30px;
+  bottom: 0;
+  left: 0;
+  transition: width 0.3s ease;
+  z-index: 1500;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE / Edge */
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari, Edge (Chromium) */
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar .sidebar-brand-wrapper {
+  padding: 20px;
+  font-size: 1.5rem;
+  color: #ffffff;
+  background-color: #222;
+}
+
+.sidebar .nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar .nav-item {
+  width: 100%;
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: #ccc;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #333;
+}
+
+.sidebar .menu-icon {
+  margin-right: 15px;
+  font-size: 1.2rem;
+}
+
+.sidebar.collapsed .menu-title {
+  display: none;
+}
+
+.sidebar.collapsed .week-grid {
+  display: none;
+}
+
+/* Weekly calendar grids under each department */
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  padding: 0px;
+}
+
+.week-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 4.2vh;
+  min-height: 26px;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+  padding: 0 0px;
+  border-radius: 0px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.week-cell:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+.week-cell:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.week-cell.selected {
+  transform: translateY(-1px);
+}
+
+/* Top navbar */
+.navbar {
+  width: 100%;
+  height: 30px;
+  background-color: #1c1c1c;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0px;
+  z-index: 2000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: 1px solid #333;
+}
+
+.navbar .navbar-menu-wrapper {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.navbar h3 {
+  color: #ffffff;
+  font-size: 1.2rem;
+}
+
+/* Container */
+.page-body-wrapper {
+  display: flex;
+  flex-direction: row;
+  margin-top: 50px;
+  transition: margin-left 0.3s ease;
+  margin-left: 230px;
+}
+
+.sidebar.collapsed ~ .page-body-wrapper {
+  margin-left: 70px;
+}
+
+.main-panel {
+  flex-grow: 1;
+  background-color: #000;
+  padding: 15px;
+  transition: all 0.3s ease;
+  height: calc(100vh - 60px - 42px);
+  overflow: hidden;   /* no x/y scrolling - everything fits the available height */
+}
+
+/* Toggle Button */
+.navbar-toggler {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+section {
+  opacity: 0;
+  animation: fadeIn 4.5s ease forwards;
+  height: 100%;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+#maincurriculumdashboard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#cssat, #math {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.grade-grid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+}
+
+.grade-row {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+  min-height: 0;
+}
+
+.grade-row .flip-card {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+button.no-style {
+  all: unset; /* Removes all inherited/default button styles */
+  cursor: pointer; /* Optional: still keep pointer */
+  display:block;
+}
+
+/* ---- Week flip-card fronts/backs: no photo, live calendar look ----
+   Same cal-strip/cal-wrap calendar as the front, reused as-is on the back
+   face. .week-card-front and .week-card-back only supply the positioning
+   context (position: relative) and background - the calendar markup and
+   CSS are identical on both faces. */
+.week-card-front {
+  background: linear-gradient(145deg, #131313 0%, #262626 100%);
+  color: #fff;
+}
+
+.week-card-back {
+  background: linear-gradient(145deg, #131313 0%, #262626 100%);
+  color: #fff;
+}
+
+/* On the back face the EXPLORE bar sits over the bottom, so keep the calendar clear of it */
+.week-card-back .cal-wrap {
+  bottom: 26px;
+}
+
+/* Top strip: teal/blue gradient (distinct from the red used elsewhere) - WEEK N + selected label, one line */
+.cal-strip {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 16%;
+  background: linear-gradient(to right, rgba(11,61,101,0.95), rgba(0,168,204,0.95), rgba(11,61,101,0.95));
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 1% 4%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.week-strip-label {
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: 1.5px;
+  color: #fff;
+}
+
+/* Real month calendar (2026-27 academic year) - flush below the strip, no side margins.
+   The dept/grade label lives inside this same panel, below the grid, sharing its background. */
+.cal-wrap {
+  position: absolute;
+  top: 14%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  background: linear-gradient(165deg, #ffffff 0%, #eaf3f8 55%, #dcebf3 100%);
+  border-radius: 0;
+  padding: 3% 3% 2% 3%;
+}
+
+.cal-month-label {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  color: #1a1a1a;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 900;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cal-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: auto 1fr;
+  gap: 4px;
+}
+
+.cal-bottom-label {
+  margin-top: 4px;
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+  font-size: 11px;
+  letter-spacing: 0.4px;
+  color: #0a3d55;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cal-dow {
+  font-size: 11px;
+  text-align: center;
+  color: #6c8493;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 900;
+}
+
+.cal-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 800;
+  color: #1c2b33;
+}
+
+.cal-cell.cal-blank {
+  background: transparent;
+}
+
+.cal-cell.cal-active {
+  position: relative;
+  font-weight: 900;
+}
+
+/* Fixed em-based circle (not a % of the cell) so it's always perfectly round,
+   regardless of the cell's own width/height ratio. The ring (matching the
+   calendar's own background) keeps a visible gap between adjacent circles. */
+.cal-cell.cal-active::before {
+  content: '';
+  position: absolute;
+  width: 1.7em;
+  height: 1.7em;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px #eef3f7;
+  z-index: -1;
+}
+
+/* Past weeks: light blue */
+.cal-cell.cal-active.cal-past {
+  color: #0a3d55;
+}
+.cal-cell.cal-active.cal-past::before {
+  background: #a9d8f0;
+}
+
+/* Current week: red, pulsing */
+.cal-cell.cal-active.cal-current {
+  color: #fff;
+}
+.cal-cell.cal-active.cal-current::before {
+  background: #e53935;
+  animation: calPulse 2.4s ease-in-out infinite;
+}
+
+/* Upcoming weeks: light pink */
+.cal-cell.cal-active.cal-upcoming {
+  color: #6b2b39;
+}
+.cal-cell.cal-active.cal-upcoming::before {
+  background: #f8c9d4;
+}
+
+/* Friday & Saturday: always light green, every week */
+.cal-cell.cal-active.cal-weekend {
+  color: #1b5e20;
+}
+.cal-cell.cal-active.cal-weekend::before {
+  background: #b6e3ae;
+}
+
+@keyframes calPulse {
+  0%, 100% { box-shadow: 0 0 0 3px #eef3f7, 0 0 0 3px rgba(229,57,53,0.55); }
+  50% { box-shadow: 0 0 0 3px #eef3f7, 0 0 7px 6px rgba(229,57,53,0.75); }
+}
+
+/* Dashboard overview card fronts (no photo, icon based) */
+.dept-card-front {
+  border-radius: 0px;
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 40%, #262626 0%, #101010 100%);
+}
+
+/* ---- Back-face image panel: replaces the calendar grid on the week card back ---- */
+.cal-wrap-image {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cal-wrap-image img {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+}
+
+/* The back-face button now carries the subject title instead of "EXPLORE"
+   (it has both .flipback-explore-btn and .cal-bottom-label classes so
+   applySidebarLabel() keeps its text in sync). This override, being a compound
+   selector, beats the plain .cal-bottom-label rule so the text stays
+   white/readable on the button's dark-red background instead of the
+   calendar's dark-navy label color. */
+.flipback-explore-btn.cal-bottom-label {
+  color: #fff;
+  font-size: 13px;
+  margin: 0;
+  padding: 6px 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Fix: keep the sidebar-button "curl" (button::before) off the logo ----
+   .no-style resets the button's own box to `position: static` (via
+   `all: unset`), which strips its local positioning context. The generic
+   `button::before` curl pseudo-element then falls back to the nearest
+   POSITIONED ancestor - which is `.sidebar` itself (position: fixed) - so on
+   hover it was rendering pinned to the sidebar's own top-left corner, right
+   on top of the logo, instead of on the button that was actually hovered.
+   The real, correctly-positioned curl for sidebar items already comes from
+   .menu-content::before above, so this stray duplicate from the generic
+   button rule isn't needed here at all - just switch it off. */
+.no-style::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* ---- Access code modal (gates which Google Sheet gets loaded) ---- */
+.code-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(2px);
+  z-index: 4000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.code-modal {
+  position: relative;
+  width: 320px;
+  max-width: 88vw;
+  background: linear-gradient(160deg, #1c1c1c 0%, #0c0c0c 100%);
+  border: 1px solid rgba(191,4,38,0.5);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03) inset;
+  padding: 30px 26px 26px;
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+  animation: codeModalIn 0.25s ease;
+}
+
+@keyframes codeModalIn {
+  from { opacity: 0; transform: translateY(-10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.code-modal.shake {
+  animation: codeShake 0.4s ease;
+}
+
+@keyframes codeShake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-8px); }
+  40%      { transform: translateX(7px); }
+  60%      { transform: translateX(-5px); }
+  80%      { transform: translateX(4px); }
+}
+
+.code-modal-close {
+  all: unset;
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  color: #888;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+}
+.code-modal-close:hover {
+  color: #fff;
+}
+
+.code-modal-icon {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(90,0,0,0.9), rgba(191,4,38,0.9));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(191,4,38,0.4);
+}
+
+.code-modal-title {
+  margin: 0 0 6px;
+  color: #fff;
+  font-size: 17px;
+  letter-spacing: 1px;
+  font-weight: 900;
+}
+
+.code-modal-subtitle {
+  margin: 0 0 16px;
+  color: #9fd3e6;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.4px;
+}
+
+.code-modal-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #161616;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Times New Roman', Times, serif;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.code-modal-input:focus {
+  border-color: #bf0426;
+}
+
+.code-modal-error {
+  min-height: 16px;
+  margin-top: 8px;
+  color: #ff6b6b;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.code-modal-submit {
+  margin-top: 14px;
+  width: 100%;
+  padding: 0.5em 0;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* ---- Sheet data view: professional card showing the fetched week slice ---- */
+#sheet-data-card {
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 0;
+  color: #1c2b33;
+  font-family: 'Times New Roman', Times, serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Height chain fix: #sheet-data-content is the card's only child, so it must
+   be a flex column that fills the card - otherwise the banner + table below
+   it can never resolve a 100% height. */
+#sheet-data-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Full-bleed header image, no background/margins of its own ---- */
+.sheet-data-banner {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-radius: 30px 30px 0 0;
+  overflow: hidden;
+  line-height: 0; /* removes the tiny gap under inline images */
+  flex-shrink: 0;
+}
+
+.sheet-data-banner-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Single-row info strip, laid directly over the bottom of the header image -
+   fully transparent (no backing bar), sitting up from the bottom edge. */
+.sheet-data-info-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  margin-bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0;
+  padding: 8px 20px;
+  font-size: 18px;
+  line-height: 1.4;
+  letter-spacing: 0.3px;
+  color: #000000;
+  background: transparent;
+}
+
+.sheet-data-info-item {
+  white-space: nowrap;
+}
+
+.sheet-data-info-item .label {
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  opacity: 0.85;
+  text-transform: uppercase;
+  margin-right: 6px;
+}
+
+.sheet-data-info-item .value {
+  font-weight: 900;
+}
+
+.sheet-data-info-sep {
+  margin: 0 14px;
+  opacity: 0.6;
+}
+
+.sheet-data-body {
+  padding: 0;
+  margin: 0;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- WEEKS picker: one row = EDIT + WEEK 1..19 + SAVE, sits directly ABOVE the footer image (bottom touches footer top) ---- */
+.sheet-data-body {
+  position: relative;                        /* anchor for the "week not available" message */
+}
+
+.week-picker {
+  display: grid;                             /* column count is set inline from TOTAL_WEEKS */
+  width: 100%;
+  margin: 0;                                 /* no gap: bottom of the row touches the footer */
+  padding: 0;
+  flex-shrink: 0;
+  background: transparent;                   /* row is transparent */
+  border: none;
+  box-shadow: none;
+}
+
+/* Shared look of every button in the row */
+.week-pick-btn,
+.week-action-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3em;
+  min-width: 0;
+  height: 26px;
+  margin: 0;
+  padding: 0 2px;
+  border: none;
+  border-right: 2px solid #ffffff;           /* white right border */
+  border-radius: 0;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: clamp(7.5px, 0.7vw, 12px);      /* scales down so all 21 always fit in one row */
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+}
+.week-pick-btn::before,
+.week-action-btn::before {                   /* switch off the global button "curl" */
+  content: none !important;
+  display: none !important;
+}
+
+/* WEEK buttons: transparent background */
+.week-pick-btn {
+  background: transparent;
+  color: #1b4d2e;
+}
+.week-pick-btn:hover:not(.active) {
+  background: linear-gradient(180deg, #a8dea1 0%, #e6f7e3 100%);  /* deeper green on hover (same as header hover) */
+  color: #0f3b21;
+  box-shadow: inset 0 3px 0 #00a8cc;         /* teal accent line on hover */
+}
+.week-pick-btn:active {
+  transform: none;
+  box-shadow: inset 0 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Selected week = red */
+.week-pick-btn.active {
+  background: linear-gradient(180deg, #f0524e 0%, #d32f2f 100%);
+  color: #ffffff;
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.35);
+  cursor: default;
+}
+
+/* EDIT / SAVE buttons: transparent background, red text, slightly larger font */
+.week-action-btn {
+  background: transparent;
+  color: #d32f2f;                            /* red text */
+  font-size: clamp(8.5px, 0.8vw, 13px);      /* a little larger than the WEEK buttons */
+}
+.week-action-btn:hover {
+  background: linear-gradient(180deg, #bfe7b8 0%, #f0faee 100%);
+  color: #b71c1c;                            /* darker red on hover */
+  box-shadow: inset 0 3px 0 #00a8cc;
+}
+.week-action-btn:active {
+  transform: none;
+  box-shadow: inset 0 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+#sheet-data-card.is-loading .week-picker {
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+/* Very narrow screens: stack WEEK over the number so all buttons still fit in one row */
+@media (max-width: 1100px) {
+  .week-pick-btn { flex-direction: column; gap: 2px; height: 32px; padding: 0; }
+  .week-action-btn { height: 32px; }
+  .week-pick-btn .wk-word { font-size: 0.8em; }
+  .week-pick-btn .wk-num  { font-size: 1.1em; }
+}
+
+/* ---- Footer image: full-bleed strip under the table, mirrors the header image ---- */
+.sheet-data-footer {
+  position: relative;                        /* anchor for the WEEKS row laid over the image */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 0 30px 30px;
+  overflow: hidden;
+  line-height: 0;                            /* removes the tiny gap under inline images */
+  flex-shrink: 0;                            /* table takes the remaining height, footer keeps its size */
+}
+.sheet-data-footer-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---- Table wrapper: fills all remaining height; vertical scroll always active.
+   Horizontal scroll only appears as a safety net on very narrow screens. ---- */
+.sheet-data-table-wrap {
+  overflow-x: auto;
+  overflow-y: auto;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  min-height: 0;
+  background: #f7fafd;
+  scrollbar-width: thin;
+  scrollbar-color: #b7c3cc #f7fafd;
+}
+.sheet-data-table-wrap::-webkit-scrollbar { width: 8px; height: 8px; }
+.sheet-data-table-wrap::-webkit-scrollbar-track { background: #f7fafd; }
+.sheet-data-table-wrap::-webkit-scrollbar-thumb {
+  background: #b7c3cc;
+  border-radius: 4px;
+}
+.sheet-data-table-wrap::-webkit-scrollbar-thumb:hover { background: #93a4b0; }
+
+/* ---- Table: 100% width and 100% height.
+   table-layout: auto  ->  a column can never be narrower than its longest
+   word, so words are NEVER split across lines. The % widths below are the
+   preferred sizes; the browser only widens a column when a word needs it. ---- */
+.sheet-data-table {
+  width: 100%;
+  height: 100%;
+  table-layout: auto;
+  border-collapse: separate;   /* keeps borders visible on the sticky header */
+  border-spacing: 0;
+  background: #f7fafd;
+  margin: 0;
+}
+
+/* ---- Header row: taller, no padding/margin, wrapped, uppercase, centered ---- */
+.sheet-data-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 44px;                              /* room for up to 3 wrapped lines */
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #d6f0d2 0%, #ffffff 100%);
+  color: #1b4d2e;
+  font-family: 'IBM Plex Sans', 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  line-height: 1.25;
+  text-transform: uppercase;
+  text-align: center;
+  vertical-align: middle;
+  white-space: normal;                       /* wrap between words only */
+  overflow-wrap: normal;                     /* never split a word */
+  word-break: normal;
+  hyphens: none;
+  border-top: 1px solid #d3d9de;
+  border-right: 1px solid #d3d9de;
+  border-bottom: 1px solid #d3d9de;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.sheet-data-table th:first-child { border-left: 1px solid #d3d9de; }
+
+/* Header of the column the mouse is over (set from JS) */
+.sheet-data-table th.col-hover,
+.sheet-data-table th:hover {
+  background: linear-gradient(180deg, #a8dea1 0%, #e6f7e3 100%);
+  color: #0f3b21;
+}
+
+/* ---- Column widths (11 columns = C:M, total 100%) ----
+   Narrower: 1, 2, 3, 6, 8, 9, 10, 11  ->  7% each
+   Wider:    4, 5 -> 15% each,  7 -> 14% */
+.sheet-data-table th:nth-child(1),
+.sheet-data-table th:nth-child(2),
+.sheet-data-table th:nth-child(3),
+.sheet-data-table th:nth-child(6),
+.sheet-data-table th:nth-child(8),
+.sheet-data-table th:nth-child(9),
+.sheet-data-table th:nth-child(10),
+.sheet-data-table th:nth-child(11) { width: 7%; }
+
+.sheet-data-table th:nth-child(4),
+.sheet-data-table th:nth-child(5)  { width: 15%; }
+
+.sheet-data-table th:nth-child(7)  { width: 14%; }
+
+/* ---- Data row ---- */
+.sheet-data-table tbody tr {
+  height: 100%;                              /* data row fills the remaining height */
+}
+
+.sheet-data-table td {
+  padding: 10px 8px;
+  font-family: 'Nunito Sans', 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: #1f2d3a;
+  background: #f7fafd;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: normal;                     /* never split a word */
+  word-break: normal;
+  hyphens: none;
+  border-right: 1px solid #d3d9de;
+  border-bottom: 1px solid #d3d9de;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+.sheet-data-table td:first-child { border-left: 1px solid #d3d9de; }
+
+.sheet-data-table td:empty::after {
+  content: '\2014';                          /* em dash for a blank cell */
+  color: #9db0bd;
+}
+
+/* ---- Hover: row tint -> hovered cell -> hovered sentence ---- */
+.sheet-data-table tbody tr:hover td {
+  background: #f0f7fb;
+}
+.sheet-data-table tbody tr td:hover {
+  background: #e2f1f8;
+  box-shadow: inset 0 0 0 2px #7fc4a0;
+}
+
+/* ---- One line per sentence, small icon before each ---- */
+.sheet-data-table td .sent {
+  display: flex;
+  align-items: baseline;                     /* icon lines up with the first text line */
+  gap: 5px;
+  margin: 0 0 4px 0;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+.sheet-data-table td .sent:last-child {
+  margin-bottom: 0;
+}
+.sheet-data-table td .sent:hover {
+  background: #fff6cc;
+}
+
+.sheet-data-table td .sent-icon {
+  flex: 0 0 auto;
+  font-size: 11px;
+  line-height: 1;
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+}
+
+.sheet-data-table td .sent-txt {
+  flex: 1;
+  white-space: normal;
+}
+
+.sheet-data-message {
+  padding: 40px 20px;
+  text-align: center;
+  color: #5a6b74;
+  font-family: 'Nunito Sans', 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 15px;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1280px) {
+  .sheet-data-table th { font-size: 9.5px; }
+  .sheet-data-table td { font-size: 12.5px; padding: 8px 6px; }
+}
+@media (max-width: 900px) {
+  .sheet-data-table { min-width: 860px; }   /* scrolls sideways instead of squashing */
+  .sheet-data-table th { font-size: 9px; }
+  .sheet-data-table td { font-size: 12px; padding: 8px 5px; }
+}
+
+/* ---- Previous / Next week buttons: flush with the left / right edge of the
+   header image, vertically centered, transparent background ---- */
+#sheet-data-card {
+  position: relative;                        /* anchor for the toast message */
+}
+
+.week-nav-btn {
+  position: absolute;
+  top: 50%;                                  /* same vertical middle as the WEEKS row */
+  transform: translateY(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;                    /* WEEK on top, circled emoji below */
+  align-items: center;
+  gap: 3px;
+  margin: 0;
+  padding: 4px 3px;
+  border: none;
+  border-radius: 0;
+  background: transparent;                   /* no button background */
+  box-shadow: none;
+  color: #0b3d65;                            /* text colour - change here if your image needs another */
+  font-family: 'IBM Plex Sans', 'Segoe UI', 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', Roboto, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  text-shadow: 0 0 4px rgba(255,255,255,0.9), 0 0 8px rgba(255,255,255,0.6);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
+}
+.week-nav-btn::before {                      /* switch off the global button "curl" */
+  content: none !important;
+  display: none !important;
+}
+
+/* The arrow emoji: smaller, inside a circle with a white background and red border */
+.week-nav-btn .nav-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 28px;
+  height: 28px;
+  border: 2px solid #e53935;                 /* red border */
+  border-radius: 50%;
+  background: #ffffff;                       /* circle background */
+  font-size: 14px;
+  line-height: 1;
+  text-shadow: none;
+}
+
+/* Less padding on the edge side of each button (prev = left, next = right) */
+.week-nav-btn.prev { left: 0;  transform-origin: left center;  padding-left: 2px; }
+.week-nav-btn.next { right: 0; transform-origin: right center; padding-right: 2px; }
+
+/* More space between the WEEK text and the header edge (prev = left, next = right) */
+.week-nav-btn.prev .nav-label { margin-left: 10px; }
+.week-nav-btn.next .nav-label { margin-right: 10px; }
+
+/* Hover effect (kept): grows a little, brightens, soft shadow under the glyphs */
+.week-nav-btn:hover:not(:disabled) {
+  transform: translateY(-50%) scale(1.12);
+  filter: brightness(1.15) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.35));
+}
+.week-nav-btn:active:not(:disabled) {
+  transform: translateY(-50%) scale(0.96);
+  box-shadow: none;
+}
+.week-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* While the next/previous week is loading */
+#sheet-data-card.is-loading .sheet-data-body {
+  opacity: 0.55;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+#sheet-data-card.is-loading .week-nav-btn {
+  pointer-events: none;
+}
+
+/* Small message shown when a week can't be loaded */
+.week-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 6;
+  max-width: 80%;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: #0b3d65;
+  color: #ffffff;
+  font-family: 'IBM Plex Sans', 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.week-toast.show {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .week-nav-btn { font-size: 10px; }
+  .week-nav-btn .nav-emoji { width: 22px; height: 22px; font-size: 11px; }
+  .week-nav-btn.prev .nav-label { margin-left: 6px; }
+  .week-nav-btn.next .nav-label { margin-right: 6px; }
+}
+
+/* ---- EDIT mode ---- */
+.week-action-btn.on,
+.week-action-btn.on:hover {                  /* EDIT button while the week is being edited */
+  background: linear-gradient(180deg, #f0524e 0%, #d32f2f 100%);
+  color: #ffffff;
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.35);
+}
+
+.sheet-data-table tbody tr td.editing,
+.sheet-data-table tbody tr:hover td.editing,
+.sheet-data-table tbody tr td.editing:hover {
+  background: #ffffff;
+  box-shadow: inset 0 0 0 2px #f5c542;       /* amber outline = editable */
+  white-space: pre-wrap;                     /* keeps the line breaks you type */
+  cursor: text;
+  outline: none;
+}
+.sheet-data-table tbody tr td.editing:focus {
+  box-shadow: inset 0 0 0 2px #00a8cc;       /* teal outline on the cell you are typing in */
+}
+.sheet-data-table td.editing:empty::after {
+  content: '';                               /* no em dash placeholder while editing */
+}
+
+/* =====================================================================
+   TEACHER PORTFOLIOS  (sidebar dropdown + teacher flip-cards + password modal)
+   ===================================================================== */
+
+/* ---- sidebar: TEACHER PORTFOLIOS button + dropdown ---- */
+.menu-caret {
+  margin-left: auto;
+  padding-right: 6px;
+  z-index: 2;
+  font-size: 12px;
+  color: #9fd3e6;
+  transition: transform 0.25s ease;
+}
+#tpToggleBtn[aria-expanded="true"] .menu-caret { transform: rotate(180deg); }
+
+.tp-submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.tp-submenu.open { max-height: 260px; }
+.tp-submenu > .menu-item { padding: 2px 2px 2px 18px; }
+.sidebar .tp-submenu .menu-icon { width: 28px; height: 28px; margin-right: 10px; }
+.tp-submenu .menu-icon i { font-size: 14px; }
+.tp-submenu .menu-title { font-size: 13px; }
+.sidebar.collapsed .menu-caret { display: none; }
+.sidebar.collapsed .tp-submenu > .menu-item { padding-left: 2px; }
+
+/* ---- the section: same grid as the Computer Science week cards
+        (5 cards per row, 6px gaps, filling the panel) - 5 x 4 = 20 teachers, no scrolling ---- */
+#teacherportfolio {
+  height: 100%;
+  overflow: hidden;
+}
+
+.tp-grid {
+  --h: calc((100vh - 120px) / 4);            /* height of one card = (panel height - 3 gaps) / 4; everything inside scales from it */
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  height: 100%;
+}
+
+/* ---- the flip-card ---- */
+.tp-card {
+  perspective: 1000px;
+  height: 100%;
+  min-height: 0;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.25s ease;
+}
+.tp-card:hover { transform: translateY(-3px); }
+
+.tp-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+.tp-card:hover .tp-inner,
+.tp-card:focus-visible .tp-inner {
+  transform: rotateY(180deg);
+}
+
+.tp-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--h) * 0.03);
+  padding: calc(var(--h) * 0.14) 8px calc(var(--h) * 0.05);
+  box-sizing: border-box;
+  border-radius: clamp(10px, calc(var(--h) * 0.1), 18px);
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+  font-family: 'IBM Plex Sans', 'Segoe UI', Roboto, Arial, sans-serif;
+  color: #10305a;
+  text-align: center;
+}
+
+/* front: light gradient (white -> soft blue) with a gold ribbon */
+.tp-front {
+  background:
+    radial-gradient(circle at 22% 12%, rgba(0, 168, 204, 0.12) 0%, transparent 55%),
+    linear-gradient(160deg, #ffffff 0%, #eaf3fb 55%, #d3e5f5 100%);
+  border: 1px solid rgba(16, 48, 90, 0.14);
+}
+.tp-front::before {                          /* gold ribbon along the top */
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: clamp(3px, calc(var(--h) * 0.03), 6px);
+  background: linear-gradient(90deg, #e69b00, #f5c542, #e69b00);
+}
+.tp-front::after {                           /* faint maths symbols in the corner */
+  content: '\2211  \03C0  \222B  \221A';
+  position: absolute;
+  right: 8px;
+  bottom: 0;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: calc(var(--h) * 0.24);
+  letter-spacing: 4px;
+  color: rgba(16, 48, 90, 0.07);
+  pointer-events: none;
+}
+
+/* heading = the option picked in the dropdown (e.g. "MATHEMATICS BOYS TP") */
+.tp-dept {
+  position: absolute;
+  top: calc(var(--h) * 0.065);
+  left: 6px;
+  right: 6px;
+  font-size: clamp(7px, calc(var(--h) * 0.056), 9.5px);
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #a86f00;
+}
+
+/* photo frame: a round "portrait" with a gold / teal ring (emoji stands in for the photo) */
+.tp-photo {
+  width: calc(var(--h) * 0.42);
+  height: calc(var(--h) * 0.42);
+  padding: clamp(2px, calc(var(--h) * 0.02), 4px);
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: conic-gradient(from 210deg, #f5c542, #00a8cc, #f5c542);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+.tp-photo-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #d5e6f2 100%);
+  font-size: calc(var(--h) * 0.27);
+  line-height: 1;
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+}
+
+.tp-name {
+  margin: 0;
+  font-size: clamp(11px, calc(var(--h) * 0.115), 17px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.2px;
+  color: #10305a;
+}
+.tp-name { text-wrap: balance; }
+.tp-name.long {                              /* long names (e.g. four words) wrap onto two lines, so use a smaller font */
+  font-size: clamp(9.5px, calc(var(--h) * 0.088), 13.5px);
+  line-height: 1.2;
+}
+.tp-role {                                   /* department */
+  font-size: clamp(8.5px, calc(var(--h) * 0.075), 11.5px);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #0b6f8f;
+}
+
+/* back: light teal -> soft gold side with the lock */
+.tp-back {
+  transform: rotateY(180deg);
+  background:
+    radial-gradient(circle at 78% 14%, rgba(245, 197, 66, 0.3) 0%, transparent 55%),
+    linear-gradient(160deg, #eaf8fc 0%, #c9e8f3 100%);
+  border: 1px solid rgba(16, 48, 90, 0.14);
+  padding-top: calc(var(--h) * 0.06);
+}
+.tp-lock {
+  font-size: clamp(22px, calc(var(--h) * 0.24), 38px);
+  line-height: 1;
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+}
+.tp-back-label {
+  font-size: clamp(7.5px, calc(var(--h) * 0.06), 10.5px);
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: #a86f00;
+}
+.tp-open {
+  margin-top: calc(var(--h) * 0.02);
+  padding: calc(var(--h) * 0.035) calc(var(--h) * 0.11);
+  color: #10305a;
+  border: 1px solid rgba(16, 48, 90, 0.5);
+  border-radius: 999px;
+  font-size: clamp(8px, calc(var(--h) * 0.065), 11px);
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.tp-card:focus-visible .tp-front { box-shadow: 0 0 0 3px #f5c542, 0 6px 16px rgba(0, 0, 0, 0.45); }
+
+/* password box: keep the typed text as typed (the access-code box upper-cases it) */
+.tp-pw-input {
+  text-transform: none;
+  letter-spacing: 2px;
+}
+
+/* ---- teacher folder view (sub-folders of the teacher's Google Drive folder) ---- */
+#teacherfolder { height: 100%; }
+.tf-bar {
+  height: 38px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 10px 6px;
+  font-family: 'IBM Plex Sans', 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 13px;
+  white-space: nowrap;
+}
+button.no-style.tf-back {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 8px;
+  color: #f5c542;
+  font-weight: 600;
+  cursor: pointer;
+}
+button.no-style.tf-back:hover,
+button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); outline: none; }
+.tf-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; color: #ffffff; font-weight: 600; letter-spacing: 0.3px; }
+.tf-open { color: #9fd3e6; font-size: 12px; text-decoration: none; }
+.tf-open:hover { color: #ffffff; text-decoration: underline; }
+.tf-frame {
+  display: block;
+  width: 100%;
+  height: calc(100% - 38px);
+  border: 0;
+  border-radius: 18px;
+  background: #ffffff;
+}
+</style>
+
+  </head>
+  <body>
+
+  <!-- partial:../../partials/_sidebar.html -->
+  <nav class="sidebar sidebar-offcanvas" id="sidebar"style="background:transparent;">
+
+    <ul class="nav">
+
+      <li class="nav-item menu-items">
+  <div class="menu-item" style="display: flex; justify-content: center; align-items: center;">
+    <img src="Images/logo.png" alt="Logo" style="width: 200px; height: auto;">
+  </div>
+</li>
+
+      <li class="nav-item menu-items">
+        <div class="menu-item">
+          <button class="no-style" data-target="cssat" style="width:100%;">
+            <div class="menu-content active">
+              <span class="menu-icon"><i class="fa fa-laptop" style="color: #007bff;"></i></span>
+              <span class="menu-title">COMPUTER SCIENCE</span>
+            </div>
+          </button>
+        </div>
+      </li>
+
+
+      <li class="nav-item menu-items">
+        <div class="menu-item">
+          <button class="no-style" data-target="math" style="width:100%;">
+            <div class="menu-content">
+              <span class="menu-icon"><i class="fa fa-calculator" style="color: #28a745;"></i></span>
+              <span class="menu-title">MATHEMATICS</span>
+            </div>
+          </button>
+        </div>
+      </li>
+
+      <li class="nav-item menu-items">
+        <div class="menu-item">
+          <button class="no-style" type="button" id="tpToggleBtn" style="width:100%;" aria-expanded="false" aria-controls="tpSubmenu">
+            <div class="menu-content">
+              <span class="menu-icon"><i class="fa fa-graduation-cap" style="color: #f5c542;"></i></span>
+              <span class="menu-title">TEACHER PORTFOLIOS</span>
+              <span class="menu-caret"><i class="fa fa-chevron-down"></i></span>
+            </div>
+          </button>
+
+          <!-- dropdown: each option loads 20 teacher flip-cards -->
+          <ul class="tp-submenu" id="tpSubmenu">
+            <li class="menu-item">
+              <button class="no-style" data-target="teacherportfolio" data-group="math-girls" style="width:100%;">
+                <div class="menu-content">
+                  <span class="menu-icon"><i class="fa fa-female" style="color: #28a745;"></i></span>
+                  <span class="menu-title">Mathematics Girls TP</span>
+                </div>
+              </button>
+            </li>
+            <li class="menu-item">
+              <button class="no-style" data-target="teacherportfolio" data-group="math-boys" style="width:100%;">
+                <div class="menu-content">
+                  <span class="menu-icon"><i class="fa fa-male" style="color: #28a745;"></i></span>
+                  <span class="menu-title">Mathematics Boys TP</span>
+                </div>
+              </button>
+            </li>
+            <li class="menu-item">
+              <button class="no-style" data-target="teacherportfolio" data-group="cs-boys" style="width:100%;">
+                <div class="menu-content">
+                  <span class="menu-icon"><i class="fa fa-male" style="color: #007bff;"></i></span>
+                  <span class="menu-title">Computer Boys TP</span>
+                </div>
+              </button>
+            </li>
+            <li class="menu-item">
+              <button class="no-style" data-target="teacherportfolio" data-group="cs-girls" style="width:100%;">
+                <div class="menu-content">
+                  <span class="menu-icon"><i class="fa fa-female" style="color: #007bff;"></i></span>
+                  <span class="menu-title">Computer Girls TP</span>
+                </div>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+
+<li class="nav-item menu-items">
+        <div class="menu-item">
+          <button class="no-style" data-target="mathcollab" style="width:100%;">
+            <div class="menu-content">
+              <span class="menu-icon"><i class="fa fa-users" style="color: #00a8cc;"></i></span>
+              <span class="menu-title">MATH COLLABORATION</span>
+            </div>
+          </button>
+        </div>
+      </li>
+
+<li class="nav-item menu-items">
+        <div class="menu-item">
+          <button class="no-style" data-target="math" style="width:100%;">
+            <div class="menu-content">
+              <span class="menu-icon"><i class="fa fa-calculator" style="color: #28a745;"></i></span>
+              <span class="menu-title">ADMIN DASHBOARD</span>
+            </div>
+          </button>
+
+        </div>
+      </li>
+
+    </ul>
+  </nav>
+  <!-- partial -->
+
+  <div class="container-fluid page-body-wrapper"style="background:#222;">
+    <!-- partial:../../partials/_navbar.html -->
+    <nav class="navbar p-0 fixed-top d-flex flex-row"style="background:#222;">
+      <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+          <span class="mdi mdi-menu"style="color:red;"></span>
+        </button>
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" id="fullscreenBtn" title="Toggle fullscreen">
+          <span class="mdi mdi-fullscreen" id="fullscreenIcon" style="color:red;"></span>
+        </button>
+       <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize" style="color: white; box-shadow: none; font-family: 'Times New Roman', Times, serif; font-weight: bold;">
+  <span>CURRICULUM OUTLINE: ALROWAD INTERNATIONAL SCHOOL</span>
+</button>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+          data-toggle="offcanvas">
+          <span class="mdi mdi-format-line-spacing"style="color:red;"></span>
+        </button>
+      </div>
+    </nav>
+    <!-- partial -->
+
+<!-- MAIN MAIN PANEL STARTS----------------------------------------------------->
+
+<div class="main-panel" style="position: relative; background:#000; border-radius:50px; width: 100%; z-index: 1000;">
+
+<!-- MAIN CURRICULUM DASHBOARD STARTS----------------------------------------------------->
+  <section id="maincurriculumdashboard" style="display:none;">
+   <div class="row" style="display: flex; gap: 0%; flex-wrap: nowrap; height:100%;">
+
+          <!-- Computer Science -->
+          <div class="flip-card"style="border-top-left-radius:50px;border:2px solid black;height:100%;">
+            <div class="flip-card-inner" style="border-radius:0px;">
+              <div class="flip-card-front" style="border-radius:0px; overflow:hidden;">
+                <div class="dept-card-front">
+                <i class="fa fa-laptop" style="font-size:90px;color:#bf0426;opacity:0.85;"></i>
+             <h2 class="card-title" id="cs-overview-title"
+    style="position:absolute;bottom:0;left:0;right:0;background: linear-gradient(to right, rgba(90, 0, 0, 0.5), rgba(191, 4, 38, 0.5), rgba(90, 0, 0, 0.5));color:white;text-align:center;font-size:16px;margin:0;padding:5px;font-family: 'Times New Roman', Times, serif; font-weight: bold;">
+    DEPT. OF COMPUTER SCIENCE
+</h2>
+                </div>
+              </div>
+   <div class="flip-card-back">
+   <span class="flipback-title" id="cs-overview-backtitle" data-dept="CS">COMPUTER SCIENCE</span>
+  <button class="flipback-explore-btn" data-target="cssat">EXPLORE</button>
+ </div>
+</div>
+</div>
+
+         <!-- Mathematics -->
+          <div class="flip-card"style="height:100%;">
+            <div class="flip-card-inner" style="border-radius:0px;border:2px solid black;">
+              <div class="flip-card-front" style="border-radius:0px; overflow:hidden;">
+                <div class="dept-card-front">
+                <i class="fa fa-calculator" style="font-size:90px;color:#28a745;opacity:0.85;"></i>
+             <h2 class="card-title" id="math-overview-title"
+    style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to right, rgba(15,32,39,0.8), rgba(32,58,67,0.8), rgba(15,32,39,0.8));color:white;text-align:center;font-size:16px;margin:0;padding:5px;font-family: 'Times New Roman', Times, serif; font-weight: bold;">
+    DEPT. OF MATHEMATICS
+</h2>
+                </div>
+              </div>
+   <div class="flip-card-back">
+   <span class="flipback-title" id="math-overview-backtitle" data-dept="MATH">MATHEMATICS</span>
+  <button class="flipback-explore-btn" data-target="math">EXPLORE</button>
+ </div>
+</div>
+</div>
+</div>
+
+</section>
+<!-- MAIN CURRICULUM DASHBOARD ENDS----------------------------------------------------->
+
+<!-- CS SAT DASHBOARD STARTS----------------------------------------------------->
+<section id="cssat">
+   <div class="grade-grid" id="cs-week-grid"></div>
+</section>
+    <!-- CS SAT SECTION ENDS----------------------------------------------------->
+
+<!-- MATH DASHBOARD STARTS----------------------------------------------------->
+<section id="math"style="display:none;">
+   <div class="grade-grid" id="math-week-grid"></div>
+</section>
+    <!-- MATH SECTION ENDS----------------------------------------------------->
+
+<!-- SHEET DATA VIEW STARTS (shown after the flipback's access code is confirmed) --------->
+<section id="gsheetview" style="display:none;">
+  <div id="sheet-data-card">
+    <div id="sheet-data-content"></div>
+  </div>
+</section>
+    <!-- SHEET DATA VIEW ENDS----------------------------------------------------->
+
+<!-- TEACHER PORTFOLIOS STARTS (opened from the dropdown under the TEACHER PORTFOLIOS sidebar button) --------->
+<section id="teacherportfolio" style="display:none;">
+  <div class="tp-grid" id="tpGrid"></div>
+</section>
+    <!-- TEACHER FOLDER: shows the sub-folders of a teacher's Google Drive folder (opened from a teacher card) -->
+<section id="teacherfolder" style="display:none;">
+  <div class="tf-bar">
+    <button type="button" class="no-style tf-back" id="tfBack">&#8592; Back to teachers</button>
+    <span class="tf-title" id="tfTitle"></span>
+    <a class="tf-open" id="tfOpen" href="#" target="_blank" rel="noopener noreferrer">Open in Google Drive &#8599;</a>
+  </div>
+  <iframe id="tfFrame" class="tf-frame" title="Teacher folder (Google Drive)"></iframe>
+</section>
+<!-- TEACHER PORTFOLIOS ENDS----------------------------------------------------->
+
+<!-- MATH COLLABORATION: the sub-folders of the shared Google Drive folder, shown in the main panel -->
+<section id="mathcollab" style="display:none;">
+  <div class="tf-bar">
+    <span class="tf-title">MATH COLLABORATION</span>
+    <a class="tf-open" href="https://drive.google.com/drive/folders/1tfAEq4nUzQkbp3kzi0PVNuEo1zxLWcGy?usp=drive_link" target="_blank" rel="noopener noreferrer">Open in Google Drive &#8599;</a>
+  </div>
+  <iframe id="mathCollabFrame" class="tf-frame" title="Math Collaboration (Google Drive)"
+          data-src="https://drive.google.com/embeddedfolderview?id=1tfAEq4nUzQkbp3kzi0PVNuEo1zxLWcGy#list"></iframe>
+</section>
+    <!-- MATH COLLABORATION ENDS----------------------------------------------------->
+
+
+
+</div> <!-- main-panel -->
+
+  </div> <!-- page-body-wrapper -->
+
+ <footer class="footer"style="text-align:center;font-family: 'Times New Roman', Times, serif;color:grey;position:fixed;left:250px;right:0;bottom:4px;height:15px;background:transparent;z-index:1500;margin:0;font-size:12px;">
+          <span class="text-muted">| Department of Computer Science | Al - Rowad International Schools  |  (الرواد العالمية)  | </span>
+        </footer>
+
+<!-- ACCESS CODE MODAL: shown when a week card's flipback button is clicked.
+     Which Google Sheet gets loaded depends entirely on which valid code is
+     entered - CS2022 loads Sheet 1, MT2121 loads Sheet 2. Nothing loads on
+     a wrong code. -->
+<div id="codeModalOverlay" class="code-modal-overlay" style="display:none;">
+  <div class="code-modal">
+    <button type="button" class="code-modal-close" id="codeModalClose" aria-label="Close">&times;</button>
+    <div class="code-modal-icon"><i class="fa fa-key"></i></div>
+    <h3 class="code-modal-title">ENTER ACCESS CODE</h3>
+    <p class="code-modal-subtitle">Enter your access code to view the sheet</p>
+    <input type="text" id="codeModalInput" class="code-modal-input" placeholder="Access code" autocomplete="off" autocapitalize="characters">
+    <div class="code-modal-error" id="codeModalError"></div>
+    <button type="button" class="code-modal-submit" id="codeModalSubmit">SUBMIT</button>
+  </div>
+</div>
+
+<!-- TEACHER PASSWORD MODAL: opens when a teacher's flip-card is clicked -->
+<div id="tpPwOverlay" class="code-modal-overlay" style="display:none;">
+  <div class="code-modal" id="tpPwBox" role="dialog" aria-modal="true" aria-labelledby="tpPwTitle">
+    <button type="button" class="code-modal-close" id="tpPwClose" aria-label="Close">&times;</button>
+    <div class="code-modal-icon"><i class="fa fa-lock"></i></div>
+    <h3 class="code-modal-title" id="tpPwTitle">TEACHER PORTFOLIO</h3>
+    <p class="code-modal-subtitle" id="tpPwSubtitle">Enter the password to continue</p>
+    <input type="password" id="tpPwInput" class="code-modal-input tp-pw-input" placeholder="Password" autocomplete="off">
+    <div class="code-modal-error" id="tpPwError"></div>
+    <button type="button" class="code-modal-submit" id="tpPwSubmit">SUBMIT</button>
+  </div>
+</div>
+
+<script>
+  document.querySelector('.navbar-toggler').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.toggle('collapsed');
+  });
+</script>
+
+<script>
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+  const fullscreenIcon = document.getElementById('fullscreenIcon');
+
+  fullscreenBtn.addEventListener('click', async () => {
+    try {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+        const el = document.documentElement;
+        if (el.requestFullscreen) {
+          await el.requestFullscreen();
+        } else if (el.webkitRequestFullscreen) {
+          await el.webkitRequestFullscreen();
+        } else if (el.msRequestFullscreen) {
+          await el.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          await document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          await document.msExitFullscreen();
+        }
+      }
+    } catch (err) {
+      console.error('Fullscreen error:', err);
+    }
+  });
+
+  function syncFullscreenIcon() {
+    const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+    fullscreenIcon.classList.toggle('mdi-fullscreen', !isFullscreen);
+    fullscreenIcon.classList.toggle('mdi-fullscreen-exit', isFullscreen);
+  }
+
+  document.addEventListener('fullscreenchange', syncFullscreenIcon);
+  document.addEventListener('webkitfullscreenchange', syncFullscreenIcon);
+  document.addEventListener('MSFullscreenChange', syncFullscreenIcon);
+</script>
+
+<script>
+  // ---- Build the 20 "week" flip-cards (5 per row, 4 rows) for a department ----
+  // Each week card's FRONT still shows that week's own row of real dates,
+  // Sunday through Saturday (school days highlighted). The BACK now shows
+  // the school logo image in place of the calendar, with all the same
+  // labels (WEEK N strip, dept/grade bottom label, EXPLORE button) kept.
+  var MONTH_NAMES = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+  var ROW_DOW_LABELS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+
+  // Academic year 2026-27: Week 1 runs Sun 23 Aug - Thu 27 Aug 2026, each
+  // following week starting 7 days after the previous one (Week 2 = 30 Aug, etc.)
+  var ACADEMIC_YEAR_START = new Date(2026, 7, 23); // 23 August 2026 (the Sunday of Week 1)
+
+  function weekStartDate(weekNum) {
+    var d = new Date(ACADEMIC_YEAR_START);
+    d.setDate(ACADEMIC_YEAR_START.getDate() + (weekNum - 1) * 7);
+    return d;
+  }
+
+  function addDays(date, n) {
+    var d = new Date(date);
+    d.setDate(d.getDate() + n);
+    return d;
+  }
+
+  // Only the week that actually contains today's real date should pulse
+  function isCurrentWeek(weekNum) {
+    var start = weekStartDate(weekNum);
+    var end = addDays(start, 4);
+    var today = new Date();
+    var t = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    var s = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+    var e = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+    return t >= s && t <= e;
+  }
+
+  // Classifies a week relative to today's real date: 'current', 'past' or 'upcoming'
+  function weekStatus(weekNum) {
+    if (isCurrentWeek(weekNum)) return 'current';
+    var start = weekStartDate(weekNum);
+    var today = new Date();
+    var t = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    var s = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+    return s < t ? 'past' : 'upcoming';
+  }
+
+  function monthHeading(sunday, saturday) {
+    var m1 = sunday.getMonth(), y1 = sunday.getFullYear();
+    var m2 = saturday.getMonth(), y2 = saturday.getFullYear();
+    if (m1 === m2 && y1 === y2) return MONTH_NAMES[m1] + ' ' + y1;
+    if (y1 === y2) return MONTH_NAMES[m1] + '-' + MONTH_NAMES[m2] + ' ' + y1;
+    return MONTH_NAMES[m1] + ' ' + y1 + '-' + MONTH_NAMES[m2] + ' ' + y2;
+  }
+
+  function buildRealCalendar(weekNum, bottomLabelHtml) {
+    var sunday = weekStartDate(weekNum);
+    var saturday = addDays(sunday, 6);
+    var status = weekStatus(weekNum); // 'past' | 'current' | 'upcoming'
+
+    var rowDates = [];
+    for (var o = 0; o <= 6; o++) rowDates.push(addDays(sunday, o));
+
+    var html = '<div class="cal-month-label">' + monthHeading(sunday, saturday) + '</div>';
+    html += '<div class="cal-grid">';
+    ROW_DOW_LABELS.forEach(function (h) { html += '<span class="cal-dow">' + h + '</span>'; });
+    rowDates.forEach(function (d, idx) {
+      var isSchoolDay = idx <= 4; // 0-4 = Sun-Thu; 5,6 = Fri, Sat
+      var cls;
+      if (isSchoolDay) {
+        cls = ' cal-active cal-' + status; // cal-past | cal-current | cal-upcoming
+      } else {
+        cls = ' cal-active cal-weekend'; // Fri & Sat are always green
+      }
+      html += '<span class="cal-cell' + cls + '">' + d.getDate() + '</span>';
+    });
+    html += '</div>';
+    html += bottomLabelHtml;
+    return html;
+  }
+
+  // Back-face content: just the logo image in place of the calendar grid
+  // (the dept/grade title label has been moved onto the EXPLORE button below).
+  function buildLogoPanel() {
+    return '<div class="cal-wrap-image"><img src="Images/logo.png" alt="Logo"></div>';
+  }
+
+  // FRONT face: strip + real calendar (unchanged).
+  function buildWeekFrontFace(weekNum, deptLabel, deptKey) {
+    var bottomLabel = '<div class="cal-bottom-label" data-dept="' + deptKey + '">' + deptLabel + '</div>';
+    return (
+      '<div class="flip-card-front week-card-front" style="border-radius:0px;overflow:hidden;">' +
+        '<div class="cal-strip"><span class="week-strip-label">WEEK ' + weekNum + '</span></div>' +
+        '<div class="cal-wrap">' + buildRealCalendar(weekNum, bottomLabel) + '</div>' +
+      '</div>'
+    );
+  }
+
+  // BACK face: strip + logo image (replaces the calendar). The title
+  // label that used to sit under the image now lives on the button below.
+  function buildWeekBackFace(weekNum, deptLabel, deptKey, extraHtml) {
+    return (
+      '<div class="flip-card-back week-card-back" style="border-radius:0px;overflow:hidden;">' +
+        '<div class="cal-strip"><span class="week-strip-label">WEEK ' + weekNum + '</span></div>' +
+        '<div class="cal-wrap">' + buildLogoPanel() + '</div>' +
+        (extraHtml || '') +
+      '</div>'
+    );
+  }
+
+  function buildWeekCard(weekNum, deptLabel, deptKey, cornerStyle) {
+    // The button that used to just say "EXPLORE" now shows the subject
+    // title itself, and is kept in sync by applySidebarLabel() via the
+    // cal-bottom-label class + data-dept attribute.
+    var exploreBtn = '<button class="flipback-explore-btn cal-bottom-label" data-dept="' + deptKey + '">' + deptLabel + '</button>';
+    return (
+      '<div class="flip-card" style="width:100%;height:100%;border:2px solid black;' + cornerStyle + '">' +
+        '<div class="flip-card-inner" style="border-radius:0px;">' +
+          buildWeekFrontFace(weekNum, deptLabel, deptKey) +
+          buildWeekBackFace(weekNum, deptLabel, deptKey, exploreBtn) +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderWeekGrid(containerId, deptLabel, deptKey) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const totalWeeks = 20;
+    const perRow = 5;
+    const totalRows = totalWeeks / perRow;
+    let html = '';
+    let week = 1;
+    for (let r = 0; r < totalRows; r++) {
+      html += '<div class="grade-row">';
+      for (let c = 0; c < perRow; c++) {
+        let corner = '';
+        if (r === 0 && c === 0) corner = 'border-top-left-radius:20px;';
+        if (r === 0 && c === perRow - 1) corner = 'border-top-right-radius:20px;';
+        if (r === totalRows - 1 && c === 0) corner = 'border-bottom-left-radius:20px;';
+        if (r === totalRows - 1 && c === perRow - 1) corner = 'border-bottom-right-radius:20px;';
+        html += buildWeekCard(week, deptLabel, deptKey, corner);
+        week++;
+      }
+      html += '</div>';
+    }
+    container.innerHTML = html;
+  }
+
+  renderWeekGrid('cs-week-grid', 'COMPUTER SCIENCE', 'CS');
+  renderWeekGrid('math-week-grid', 'MATHEMATICS', 'MATH');
+
+  // ---- Copy a clicked sidebar button's own label straight onto that
+  // department's week cards: the front's bottom label and the back's
+  // button (both share the .cal-bottom-label class + data-dept attribute). ----
+  function deptKeyForTarget(targetId) {
+    return targetId === 'math' ? 'MATH' : 'CS';
+  }
+
+  function applySidebarLabel(deptKey, label) {
+    document.querySelectorAll('.cal-bottom-label[data-dept="' + deptKey + '"]').forEach(function (el) {
+      el.textContent = label;
+    });
+  }
+
+  // On page load the week cards must already carry the name of the sidebar button that is
+  // highlighted (e.g. "COMPUTER SCIENCE"). That name is what the access code is checked against.
+  (function () {
+    var activeContent = document.querySelector('.sidebar .menu-content.active');
+    var activeBtn = activeContent ? activeContent.closest('button[data-target]') : null;
+    var activeTitle = activeContent ? activeContent.querySelector('.menu-title') : null;
+    if (activeBtn && activeTitle) {
+      applySidebarLabel(deptKeyForTarget(activeBtn.getAttribute('data-target')), activeTitle.textContent.trim());
+    }
+  })();
+</script>
+
+<script>
+  // Single navigation handler for both the sidebar links and the flip-card
+  // "EXPLORE" buttons on the main dashboard page. No password / Google
+  // Script logic is involved anywhere - sections simply show/hide.
+  document.querySelectorAll('button[data-target]').forEach(button => {
+    button.addEventListener('click', function () {
+      // Leaving the sheet view while editing? Ask first, then drop the unsaved edits.
+      if (editMode) {
+        if (!confirmDiscardEdits()) return;
+        rerenderCurrentView();
+      }
+
+      const targetId = this.getAttribute('data-target');
+
+      // Hide all sections
+      document.querySelectorAll('section').forEach(sec => {
+        sec.style.display = 'none';
+      });
+
+      // Show the targeted section, restarting its fade-in animation every time
+      // (needed so re-selecting a week in the same department re-triggers the animation)
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) {
+        targetSection.style.display = 'none';
+        // Force a reflow so the browser registers the display change before showing it again
+        void targetSection.offsetWidth;
+        targetSection.style.animation = 'none';
+        void targetSection.offsetWidth;
+        targetSection.style.animation = '';
+        targetSection.style.display = 'block';
+      }
+
+      // Reset the main panel's internal scroll to the top for the newly loaded section
+      const mainPanel = document.querySelector('.main-panel');
+      if (mainPanel) mainPanel.scrollTop = 0;
+
+      // Highlight the active sidebar item
+      document.querySelectorAll('.sidebar .menu-content').forEach(mc => mc.classList.remove('active'));
+      const menuContent = this.querySelector('.menu-content');
+      if (menuContent) menuContent.classList.add('active');
+
+      // If a week button was clicked, keep it visually selected and clear any
+      // selection in the other department's grid (only one week stays selected overall)
+      if (this.classList.contains('week-cell')) {
+        document.querySelectorAll('.week-cell').forEach(cell => cell.classList.remove('selected'));
+        this.classList.add('selected');
+      }
+
+      // Sidebar buttons carry a .menu-title span (the overview cards'
+      // EXPLORE buttons don't) - when one is clicked, copy its own text
+      // straight onto that department's week card labels.
+      const titleEl = this.querySelector('.menu-title');
+      // Only the two week-card sections take their label from the sidebar
+      // (the portfolio button must not rename the Computer Science week cards)
+      if (titleEl && (targetId === 'cssat' || targetId === 'math')) {
+        applySidebarLabel(deptKeyForTarget(targetId), titleEl.textContent.trim());
+      }
+    });
+  });
+
+  // ---- Flipback bottom-label button: clicking it (only it) opens the access
+  // code modal. The selection pattern is SUBJECT-STREAM + WEEK N + the code
+  // entered (e.g. "COMPUTER SCIENCE-WEEK 1-CS2022"). The Apps Script
+  // backend (Code.gs) uses the code to pick the right sheet/tab/grade, finds
+  // that week's row, and returns ONLY columns C:M of it as compact JSON -
+  // this page never touches the raw sheet or a code-to-sheet mapping.
+  // ============================================================
+  // Deploy the companion Code.gs as a Web App ("Execute as: Me",
+  // "Who has access: Anyone"), then paste its /exec URL here.
+  // ============================================================
+  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxwq58Vdz5YauAG4xU3u6YKAF1h4m1oucmiJlmEibILs2qtiWJ0eTDqT2rZS8W5Cl7h/exec';
+
+  function showSection(sectionId) {
+    document.querySelectorAll('section').forEach(sec => { sec.style.display = 'none'; });
+    const targetSection = document.getElementById(sectionId);
+    if (!targetSection) return;
+    // Restart the fade-in animation every time the section is shown
+    targetSection.style.display = 'none';
+    void targetSection.offsetWidth;
+    targetSection.style.animation = 'none';
+    void targetSection.offsetWidth;
+    targetSection.style.animation = '';
+    targetSection.style.display = 'block';
+
+    const mainPanel = document.querySelector('.main-panel');
+    if (mainPanel) mainPanel.scrollTop = 0;
+  }
+
+  // Collapses the sidebar to give the data table more width, by triggering
+  // the real minimize button's own click (so its existing toggle handler
+  // runs normally) - only when the sidebar isn't already collapsed, so
+  // repeat table views don't flip it back open.
+  function collapseSidebarForTable() {
+    const sidebarEl = document.getElementById('sidebar');
+    const toggler = document.querySelector('.navbar-toggler[data-toggle="minimize"]');
+    if (sidebarEl && toggler && !sidebarEl.classList.contains('collapsed')) {
+      toggler.click();
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str == null ? '' : str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // ---- Sentence formatter for the data row ----
+  // Change the icon here if you like: 📝 📘 📖 📗 📙 📕
+  var SENTENCE_ICON = '📝';
+
+  // Splits a cell's text into sentences (new lines, or after . ! ? ؟ followed
+  // by a space) and puts the icon before each one.
+  // List numbers such as "1." / "2)" / "a." are kept WITH the sentence that
+  // follows them, so "1. To explain ..." stays on one line with one icon.
+  function formatCellSentences(value) {
+    var text = String(value == null ? '' : value).replace(/\r/g, '').trim();
+    if (!text) return '';   // keeps truly empty cells empty so the "—" placeholder still shows
+
+    // Protect common abbreviations so "e.g. " / "i.e. " / "Dr. " don't start a new sentence
+    text = text.replace(/\b(e\.g|i\.e|vs|Dr|Mr|Mrs|Ms|Prof)\.[ \t]+/g, '$1.\u0002');
+
+    // 1) split into raw pieces
+    var pieces = [];
+    text.split('\n').forEach(function (line) {
+      line = line.trim();
+      if (!line) return;
+      line.replace(/([.!?؟])\s+/g, '$1\u0001').split('\u0001').forEach(function (s) {
+        s = s.trim();
+        if (s) pieces.push(s);
+      });
+    });
+
+    // 2) glue list markers ("1.", "2)", "a.") onto the sentence after them
+    var sentences = [];
+    var carry = '';
+    pieces.forEach(function (p) {
+      if (/^(\d{1,3}|[A-Za-z])[.)]$/.test(p)) {
+        carry = carry ? carry + ' ' + p : p;
+        return;
+      }
+      sentences.push(carry ? carry + ' ' + p : p);
+      carry = '';
+    });
+    if (carry) sentences.push(carry);
+
+    return sentences.map(function (s) {
+      s = s.replace(/\u0002/g, ' ');
+      return '<div class="sent">' +
+               '<span class="sent-icon" aria-hidden="true">' + SENTENCE_ICON + '</span>' +
+               '<span class="sent-txt">' + escapeHtml(s) + '</span>' +
+             '</div>';
+    }).join('');
+  }
+
+  // Hover: highlights the header of the column the mouse is over.
+  // (Cell, row and sentence highlights are pure CSS.)
+  function bindTableHover() {
+    var table = document.querySelector('#sheet-data-content .sheet-data-table');
+    if (!table) return;
+    var ths = table.querySelectorAll('thead th');
+
+    function clearCols() {
+      ths.forEach(function (th) { th.classList.remove('col-hover'); });
+    }
+
+    table.addEventListener('mouseover', function (e) {
+      var td = e.target.closest('td');
+      clearCols();
+      if (td && ths[td.cellIndex]) ths[td.cellIndex].classList.add('col-hover');
+    });
+    table.addEventListener('mouseleave', clearCols);
+  }
+
+  // ---- Access code modal control ----
+  var codeOverlay = document.getElementById('codeModalOverlay');
+  var codeInput = document.getElementById('codeModalInput');
+  var codeError = document.getElementById('codeModalError');
+  var codeSubmit = document.getElementById('codeModalSubmit');
+  var codeBox = document.querySelector('.code-modal');
+  var codeCloseBtn = document.getElementById('codeModalClose');
+
+  var pendingWeekNum = null;
+  var pendingSubjectLabel = '';
+
+  function openCodeModal(weekNum, subjectLabel) {
+    pendingWeekNum = weekNum;
+    pendingSubjectLabel = subjectLabel;
+    codeInput.value = '';
+    codeError.textContent = '';
+    codeSubmit.disabled = false;
+    codeSubmit.textContent = 'SUBMIT';
+    codeOverlay.style.display = 'flex';
+    setTimeout(function () { codeInput.focus(); }, 50);
+  }
+
+  function closeCodeModal() {
+    codeOverlay.style.display = 'none';
+  }
+
+  function rejectCode(message) {
+    codeError.textContent = message || 'Invalid access code. Try again.';
+    codeBox.classList.remove('shake');
+    void codeBox.offsetWidth;
+    codeBox.classList.add('shake');
+    codeInput.value = '';
+    codeInput.focus();
+  }
+
+  // Renders the fetched slice (headers + one row, columns C:M) as a
+  // professional table, with a compact banner showing the logo and the
+  // full selection pattern (subject, week, access code, grade heading)
+  // all on one line.
+  function renderSheetData(data, subjectLabel, weekNum, code) {
+    const content = document.getElementById('sheet-data-content');
+    const columnLetters = ['C','D','E','F','G','H','I','J','K','L','M'];
+    const headers = data.headers || [];
+    const row = data.row || [];
+
+    // Remember exactly what is on screen: the Previous / Next / WEEK buttons use the week number,
+    // and EDIT / SAVE use the original values to save into THIS week only.
+    currentSheetView = {
+      code: code,
+      weekNum: weekNum,
+      subjectLabel: subjectLabel,
+      grade: data.grade,
+      headers: headers.slice(),
+      row: row.slice()
+    };
+    editMode = false;                       // every fresh render is view-only again
+
+    // Bottom row: EDIT + WEEK 1..TOTAL_WEEKS + SAVE. The week on screen is marked .active (red).
+    // Because Previous / Next / the WEEK buttons all end up here, the red one always matches.
+    let pickerHtml = '<button type="button" class="week-action-btn" id="sheetEditBtn" title="Edit">EDIT</button>';
+    for (let w = 1; w <= TOTAL_WEEKS; w++) {
+      const isActive = (w === weekNum);
+      pickerHtml +=
+        '<button type="button" class="week-pick-btn' + (isActive ? ' active' : '') + '" data-week="' + w + '"' +
+          (isActive ? ' aria-current="true"' : '') + ' title="Go to Week ' + w + '">' +
+          '<span class="wk-word">WEEK</span><span class="wk-num">' + w + '</span>' +
+        '</button>';
+    }
+    pickerHtml += '<button type="button" class="week-action-btn" id="sheetSaveBtn" title="Save">SAVE</button>';
+
+    let headerCellsHtml = '';
+    let dataCellsHtml = '';
+    for (let i = 0; i < row.length; i++) {
+      const label = (headers[i] && headers[i].trim()) ? headers[i] : ('Column ' + columnLetters[i]);
+      headerCellsHtml += '<th>' + escapeHtml(label) + '</th>';
+      dataCellsHtml += '<td>' + formatCellSentences(row[i]) + '</td>';
+    }
+
+    content.innerHTML =
+      '<div class="sheet-data-banner">' +
+        '<img class="sheet-data-banner-img" src="Images/gsheetheader.png" alt="">' +
+        '<button type="button" class="week-nav-btn prev" data-dir="prev" aria-label="Previous week"' +
+          (weekNum > 1 ? ' title="Go to Week ' + (weekNum - 1) + '"' : ' disabled') + '><span class="nav-label">WEEK</span><span class="nav-emoji">◀️</span></button>' +
+        '<button type="button" class="week-nav-btn next" data-dir="next" aria-label="Next week"' +
+          (weekNum < TOTAL_WEEKS ? ' title="Go to Week ' + (weekNum + 1) + '"' : ' disabled') + '><span class="nav-label">WEEK</span><span class="nav-emoji">▶️</span></button>' +
+        '<div class="sheet-data-info-row">' +
+          '<span class="sheet-data-info-item"><span class="label"></span><span class="value">' + escapeHtml(subjectLabel) + '</span></span>' +
+          '<span class="sheet-data-info-sep">|</span>' +
+          '<span class="sheet-data-info-item"><span class="label"></span><span class="value">WEEK ' + weekNum + '</span></span>' +
+          '<span class="sheet-data-info-sep">|</span>' +
+          '<span class="sheet-data-info-item"style="display:none;><span class="label"style="display:none;"></span><span class="value"style="display:none;>' + escapeHtml(code) + '</span></span>' +
+          '<span class="sheet-data-info-sep">|</span>' +
+          '<span class="sheet-data-info-item"><span class="label"></span><span class="value">' + escapeHtml(String(data.grade == null ? '' : data.grade).toUpperCase()) + '</span></span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="sheet-data-body">' +
+        '<div class="sheet-data-table-wrap">' +
+          '<table class="sheet-data-table">' +
+            '<thead><tr>' + headerCellsHtml + '</tr></thead>' +
+            '<tbody><tr>' + dataCellsHtml + '</tr></tbody>' +
+          '</table>' +
+        '</div>' +
+      '</div>' +
+      '<div class="week-picker" style="grid-template-columns:repeat(' + (TOTAL_WEEKS + 2) + ', minmax(0, 1fr));">' + pickerHtml + '</div>' +
+      '<div class="sheet-data-footer">' +
+        '<img class="sheet-data-footer-img" src="Images/gsheetfooter.png" alt="" onerror="this.parentNode.style.display=\'none\'">' +
+      '</div>';
+
+    bindTableHover();
+  }
+
+  function renderSheetMessage(message) {
+    const content = document.getElementById('sheet-data-content');
+    content.innerHTML = '<div class="sheet-data-message">' + escapeHtml(message) + '</div>';
+  }
+
+  // ---- Previous / Next week navigation ----
+  // Uses the SAME checks as the first open: the access code that was already
+  // accepted is re-sent to the Apps Script backend with the new week number
+  // (no need to type it again), and only weeks 1 - TOTAL_WEEKS can be shown.
+  var TOTAL_WEEKS = 19;                     // WEEK 1 - WEEK 19 in the bottom row
+  var currentSheetView = { code: '', weekNum: null, subjectLabel: '' };
+  var weekLoading = false;
+  var weekToastTimer = null;
+
+  function fetchWeekData(code, weekNum) {
+    var url = SCRIPT_URL + '?action=weekData&code=' + encodeURIComponent(code) +
+              '&subject=' + encodeURIComponent(currentSheetView.subjectLabel) +
+              '&week=' + encodeURIComponent(weekNum);
+    return fetch(url).then(function (res) { return res.json(); });
+  }
+
+  function showWeekToast(message) {
+    var card = document.getElementById('sheet-data-card');
+    if (!card) return;
+    var host = card.querySelector('.sheet-data-body') || card;   // keeps the message above the WEEKS row + footer
+    var toast = host.querySelector('.week-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'week-toast';
+      host.appendChild(toast);
+    }
+    toast.textContent = message;
+    void toast.offsetWidth;                 // restart the fade-in
+    toast.classList.add('show');
+    clearTimeout(weekToastTimer);
+    // longer messages stay a little longer
+    weekToastTimer = setTimeout(function () { toast.classList.remove('show'); }, Math.max(3200, message.length * 60));
+  }
+
+  function goToWeek(targetWeek) {
+    if (weekLoading || saveBusy || !currentSheetView.code) return;
+    if (targetWeek < 1 || targetWeek > TOTAL_WEEKS) return;
+    if (!confirmDiscardEdits()) return;     // unsaved edits on this week? ask first
+
+    var card = document.getElementById('sheet-data-card');
+    weekLoading = true;
+    if (card) card.classList.add('is-loading');
+
+    fetchWeekData(currentSheetView.code, targetWeek)
+      .then(function (data) {
+        if (data && data.success) {
+          // re-renders the table AND the info row (WEEK N, grade) for the new week
+          renderSheetData(data, currentSheetView.subjectLabel, targetWeek, currentSheetView.code);
+        } else {
+          showWeekToast(data && data.error ? data.error : 'Week ' + targetWeek + ' is not available.');
+        }
+      })
+      .catch(function (err) {
+        showWeekToast('Could not reach the server. Check your connection.');
+        console.error('Week change failed:', err);
+      })
+      .then(function () {
+        weekLoading = false;
+        if (card) card.classList.remove('is-loading');
+      });
+  }
+
+  // Delegated, so it keeps working after every re-render of the table
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.week-nav-btn');
+    if (!btn || btn.disabled || !currentSheetView.weekNum) return;
+    var step = btn.getAttribute('data-dir') === 'prev' ? -1 : 1;
+    goToWeek(currentSheetView.weekNum + step);
+  });
+
+  // Bottom WEEKS row: load the clicked week (the selected one is red)
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.week-pick-btn');
+    if (!btn) return;
+    var n = parseInt(btn.getAttribute('data-week'), 10);
+    if (!n || n === currentSheetView.weekNum) return;   // already showing this week
+    goToWeek(n);
+  });
+
+  // ============================================================
+  //  EDIT / SAVE
+  //  EDIT  -> every data cell of the week on screen becomes editable
+  //  SAVE  -> only the cells you changed are sent to the sheet, for THIS week
+  //           (week number + access code + sidebar selection are sent with them)
+  // ============================================================
+  var editMode = false;
+  var saveBusy = false;
+
+  // "plaintext-only" keeps pasted/typed content as plain text; older browsers fall back to "true"
+  var CE_MODE = (function () {
+    try {
+      var probe = document.createElement('div');
+      probe.contentEditable = 'plaintext-only';
+      if (probe.contentEditable === 'plaintext-only') return 'plaintext-only';
+    } catch (err) { /* not supported */ }
+    return 'true';
+  })();
+
+  function tableDataCells_() {
+    return document.querySelectorAll('#sheet-data-content .sheet-data-table tbody td');
+  }
+
+  function readEditableCell_(td) {
+    var t = (td.innerText === undefined || td.innerText === null) ? td.textContent : td.innerText;
+    return String(t).replace(/\r/g, '').trim();
+  }
+
+  // The cells whose text differs from what was loaded from the sheet
+  function collectEditChanges_() {
+    var out = [];
+    tableDataCells_().forEach(function (td, i) {
+      var original = String(currentSheetView.row[i] === undefined || currentSheetView.row[i] === null ? '' : currentSheetView.row[i]);
+      var value = readEditableCell_(td);
+      if (value !== original) out.push({ col: i, original: original, value: value });
+    });
+    return out;
+  }
+
+  function isEditDirty() {
+    return editMode && collectEditChanges_().length > 0;
+  }
+
+  // true = nothing to lose (or the user agreed to discard the edits)
+  function confirmDiscardEdits() {
+    if (!isEditDirty()) return true;
+    return window.confirm('You have unsaved changes in WEEK ' + currentSheetView.weekNum + '. Discard them?');
+  }
+
+  // Redraws the week exactly as loaded (view-only, formatted sentences)
+  function rerenderCurrentView() {
+    if (!currentSheetView.weekNum) return;
+    renderSheetData(
+      { grade: currentSheetView.grade, headers: currentSheetView.headers, row: currentSheetView.row },
+      currentSheetView.subjectLabel, currentSheetView.weekNum, currentSheetView.code
+    );
+  }
+
+  function enterEditMode() {
+    if (editMode || weekLoading || saveBusy || !currentSheetView.weekNum) return;
+    var cells = tableDataCells_();
+    if (!cells.length) return;
+
+    editMode = true;
+    cells.forEach(function (td, i) {
+      td.textContent = currentSheetView.row[i] || '';      // the raw sheet text (no icons)
+      td.setAttribute('contenteditable', CE_MODE);
+      td.setAttribute('spellcheck', 'true');
+      td.classList.add('editing');
+    });
+
+    var editBtn = document.getElementById('sheetEditBtn');
+    if (editBtn) editBtn.classList.add('on');
+
+    cells[0].focus();
+    showWeekToast('Editing WEEK ' + currentSheetView.weekNum + ': change any cell, then click SAVE. (Esc = cancel)');
+  }
+
+  function saveCurrentWeek() {
+    if (saveBusy || weekLoading || !currentSheetView.weekNum) return;
+
+    if (!editMode) {
+      showWeekToast('Click EDIT first, then make your changes.');
+      return;
+    }
+
+    var changes = collectEditChanges_();
+    if (!changes.length) {
+      rerenderCurrentView();                                // back to view mode
+      showWeekToast('No changes to save.');
+      return;
+    }
+
+    // Captured NOW, so the save always goes to the week that is on screen
+    var weekNum = currentSheetView.weekNum;
+    var code = currentSheetView.code;
+    var subject = currentSheetView.subjectLabel;
+    var card = document.getElementById('sheet-data-card');
+
+    saveBusy = true;
+    if (card) card.classList.add('is-loading');
+
+    var body = new URLSearchParams();
+    body.append('action', 'saveWeek');
+    body.append('code', code);
+    body.append('subject', subject);
+    body.append('week', String(weekNum));
+    body.append('changes', JSON.stringify(changes));
+
+    fetch(SCRIPT_URL, { method: 'POST', body: body })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data && data.success) {
+          // Redraw with what is now really in the sheet for this week
+          renderSheetData(data, subject, weekNum, code);
+          showWeekToast('WEEK ' + weekNum + ' saved.' + (data.notice ? ' ' + data.notice : ''));
+        } else {
+          // Stay in edit mode so nothing typed is lost
+          showWeekToast(data && data.error ? data.error : 'Could not save WEEK ' + weekNum + '.');
+        }
+      })
+      .catch(function (err) {
+        showWeekToast('Could not reach the server. Your edits are still here - try SAVE again.');
+        console.error('Save failed:', err);
+      })
+      .then(function () {
+        saveBusy = false;
+        if (card) card.classList.remove('is-loading');
+      });
+  }
+
+  // EDIT / SAVE buttons (delegated - the bottom row is redrawn on every week change)
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('#sheetEditBtn')) { enterEditMode(); return; }
+    if (e.target.closest('#sheetSaveBtn')) { saveCurrentWeek(); }
+  });
+
+  // Esc = leave edit mode without saving (asks first if something was changed)
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape' || !editMode || saveBusy) return;
+    if (confirmDiscardEdits()) rerenderCurrentView();
+  });
+
+  // Pasting into a cell always inserts plain text
+  document.addEventListener('paste', function (e) {
+    var td = e.target && e.target.closest ? e.target.closest('td.editing') : null;
+    if (!td) return;
+    e.preventDefault();
+    var text = (e.clipboardData || window.clipboardData).getData('text');
+    document.execCommand('insertText', false, text);
+  });
+
+  // Closing the tab with unsaved edits
+  window.addEventListener('beforeunload', function (e) {
+    if (isEditDirty()) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+
+  function submitCode() {
+    const raw = codeInput.value;
+    if (!raw) {
+      codeError.textContent = 'Please enter an access code.';
+      return;
+    }
+    if (!pendingWeekNum) return;
+
+    const code = raw.trim().toUpperCase();
+
+    codeError.textContent = '';
+    codeSubmit.disabled = true;
+    codeSubmit.textContent = 'CHECKING...';
+
+    // The sidebar selection (e.g. "COMPUTER SCIENCE") travels with the code:
+    // the backend only accepts a code for the selection it belongs to.
+    const url = SCRIPT_URL + '?action=weekData&code=' + encodeURIComponent(code) +
+                '&subject=' + encodeURIComponent(pendingSubjectLabel) +
+                '&week=' + encodeURIComponent(pendingWeekNum);
+
+    fetch(url)
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        codeSubmit.disabled = false;
+        codeSubmit.textContent = 'SUBMIT';
+
+        if (data && data.success) {
+          renderSheetData(data, pendingSubjectLabel, pendingWeekNum, code);
+          closeCodeModal();
+          showSection('gsheetview');
+          // Deliberately NOT clearing .menu-content's "active" class here -
+          // the sidebar button the user picked should stay highlighted
+          // while the data view is showing, since that's what got them here.
+          collapseSidebarForTable();
+        } else {
+          rejectCode(data && data.error ? data.error : 'Invalid access code. Try again.');
+        }
+      })
+      .catch(function (err) {
+        codeSubmit.disabled = false;
+        codeSubmit.textContent = 'SUBMIT';
+        codeError.textContent = 'Could not reach the server. Check your connection.';
+        console.error('Week data fetch failed:', err);
+      });
+  }
+
+  codeSubmit.addEventListener('click', submitCode);
+  codeInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') submitCode(); });
+  codeCloseBtn.addEventListener('click', closeCodeModal);
+  codeOverlay.addEventListener('click', function (e) { if (e.target === codeOverlay) closeCodeModal(); });
+
+  // Delegated on the document so it keeps working no matter when/how the
+  // week cards were built, and only fires for the flipback's own button
+  // (the week card back's .flipback-explore-btn, identified by data-dept -
+  // the overview cards' EXPLORE buttons use data-target instead, not this).
+  // The subject label comes straight from the button's own text (already
+  // kept in sync with the sidebar selection), and the week number from
+  // that same flip-card's "WEEK N" strip.
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.week-card-back .flipback-explore-btn[data-dept]');
+    if (!btn) return;
+    e.stopPropagation();
+
+    const subjectLabel = btn.textContent.trim();
+    const flipCard = btn.closest('.flip-card');
+    const stripLabel = flipCard ? flipCard.querySelector('.week-strip-label') : null;
+    const weekMatch = stripLabel ? stripLabel.textContent.match(/\d+/) : null;
+    const weekNum = weekMatch ? parseInt(weekMatch[0], 10) : null;
+
+    if (!weekNum) return;
+
+    openCodeModal(weekNum, subjectLabel);
+  });
+</script>
+
+
+
+<script>
+  // =====================================================================
+  //  TEACHER PORTFOLIOS
+  //  Sidebar: TEACHER PORTFOLIOS > dropdown (4 options). Each option loads 20 teacher
+  //  flip-cards (5 per row x 4 rows). Clicking a card opens the password box.
+  // =====================================================================
+
+  // Teacher names for each dropdown option (20 cards per option).
+  //   heading    = text shown on the cards / in the password box (same as the dropdown option)
+  //   department = shown under each teacher's name
+  //   emoji      = stands in for the photo (all cards use the student emoji; a teacher can override it with { name, emoji })
+  //   padDummy   = if fewer than 20 names are listed, dummy names ("Teacher Name 14"...) are added at the end
+  //   { name, folderId } = a teacher with a Google Drive folder: clicking the card shows that folder's sub-folders
+  // All four options now use real names (dummy names fill the free cards).
+  var TEACHER_GROUPS = [
+    { id: 'math-girls', heading: 'Mathematics Girls TP', department: 'Mathematics', emoji: '🧑‍🎓',
+      padDummy: true,
+      teachers: [
+        { name: 'Uzma Farzeen', folderId: '1XGQeepYjyoMUQMxbobLvhYJU6-Q8ZiNn' },   // clicking this card shows this Drive folder's sub-folders
+        'Suha Bassam Olayan', 'Saja Hmdan Mohamed Elzaghal',
+        'Rania Wessam Abdelmanem Rashed', 'Nour Mohammed Kekshan',
+        'Nahl Osama Mahmoud', 'Naheel Mohammad Solyman',
+        'Nadin Mahmood Alatrash', 'Nadin Karout',
+        'Mayyadah Ghazi Saeed Shakwakani', 'Mayada Adnan Fayek Bilal',
+        'Mai Ahmed Elsayed Elgamil', 'Heba Salah Mahmoud',
+        'Ghadeer Fadel Sawaftah', 'Farheen Mumtaz',
+        'Eshraq Ibrahim Aburayyan', 'Engy Sami',
+        'Dina Shaaban Al Anani', 'Dana Suhail Abu Kahil',
+        'Ayat Mohammed Saleh Yahya'
+      ] },
+    { id: 'math-boys',  heading: 'Mathematics Boys TP',  department: 'Mathematics', emoji: '🧑‍🎓',
+      padDummy: true,
+      teachers: [
+        'Omar Abdul Rahman Ibrahim Babikir', 'Mouley Mouhamed Belhadj Mouhamed',
+        'Mohammed Fathi Mansour', 'Mohamed Sayed Shaban Korany',
+        'Mohamed Said Hamed Mostafa', 'Mohamed Hussein Thha Elafandy',
+        'Mohamed Gamal Aboukhadra', 'Mohamed Ahmed Mohyeldin',
+        'Mohamed Abdallah', 'Moath Hassan Aljebawi',
+        'Hafiz Tauqir Hamayun', 'Ehab Fathy Ismaiel',
+        'Amr Mohammed Mustafa', 'Ali Yousef Mudawi Mohammed',
+        'Ahmed Salah Mahran Shehata', 'Ahmed Mohamed Mohamed Awad',
+        'Ahmed Ayman Abelhalim Shehabeldin'
+      ] },
+    { id: 'cs-boys',    heading: 'Computer Boys TP',     department: 'Computer',    emoji: '🧑‍🎓',
+      padDummy: true,
+      teachers: [
+        'Syed Tahir', 'Hisham Qureshi',
+        'Mohammad Aslam', 'Lone Firdous',
+        'Manzoor Ahmad', 'Murtaza Shareef',
+        'Rizwan Khan', 'Basaam',
+        'Abdul Salaam', 'Wael'
+      ] },
+    { id: 'cs-girls',   heading: 'Computer Girls TP',    department: 'Computer',    emoji: '🧑‍🎓',
+      padDummy: true,
+      teachers: [
+        'Shr Ltfe Ltfe', 'Shiba Liaquat',
+        'Shehla Asad Awan', 'Shatha Khalid Alakhras',
+        'Sarah Sahli', 'Raneen Zaher Qasem',
+        'Malak Ahmed Almelahan', 'Madiha Amir',
+        'Lama Adnan Hussein', 'Huda Basem Shurih',
+        'Fatima Taj Alasfia Ahmed', 'Amal Mohamad Althamnah',
+        'Alyah Khalid'
+      ] }
+  ];
+
+  var tpToggle = document.getElementById('tpToggleBtn');
+  var tpSubmenu = document.getElementById('tpSubmenu');
+  var tpGrid = document.getElementById('tpGrid');
+  var tpOverlay = document.getElementById('tpPwOverlay');
+  var tpBox = document.getElementById('tpPwBox');
+  var tpTitle = document.getElementById('tpPwTitle');
+  var tpInput = document.getElementById('tpPwInput');
+  var tpError = document.getElementById('tpPwError');
+  var tpSubtitle = document.getElementById('tpPwSubtitle');
+  var tpSubmit = document.getElementById('tpPwSubmit');
+  var tpClose = document.getElementById('tpPwClose');
+
+  var tfBack = document.getElementById('tfBack');
+  var tfTitle = document.getElementById('tfTitle');
+  var tfOpen = document.getElementById('tfOpen');
+  var tfFrame = document.getElementById('tfFrame');
+  var tfSection = document.getElementById('teacherfolder');
+  var tpPortfolioSection = document.getElementById('teacherportfolio');
+
+  var tpGroup = null;         // the group (dropdown option) whose cards are on screen
+  var tpSelected = null;      // the teacher whose card was clicked
+  var tpOpener = null;        // the card element (focus goes back to it when the box closes)
+
+  // ---- dropdown open / close ----
+  if (tpToggle && tpSubmenu) {
+    tpToggle.addEventListener('click', function () {
+      var open = !tpSubmenu.classList.contains('open');
+      tpSubmenu.classList.toggle('open', open);
+      tpToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
+  // ---- load one dropdown option: draw its 20 cards ----
+  var TP_MAX = 20;                       // the grid holds 5 x 4 cards
+  function teacherList(group) {
+    var list = group.teachers.slice(0, TP_MAX);
+    if (group.padDummy) {
+      for (var i = list.length; i < TP_MAX; i++) list.push('Teacher Name ' + (i + 1));   // dummy names at the end
+    }
+    return list;
+  }
+
+  function loadTeacherGroup(groupId) {
+    var group = TEACHER_GROUPS.filter(function (g) { return g.id === groupId; })[0];
+    if (!group || !tpGrid) return;
+    tpGroup = group;
+
+    tpGrid.innerHTML = teacherList(group).map(function (item, i) {
+      var t = (typeof item === 'string') ? { name: item } : item;
+      var name = escapeHtml(t.name);
+      var nameCls = 'tp-name' + (String(t.name).length > 20 ? ' long' : '');   // long names get a smaller font
+      return '<div class="tp-card" role="button" tabindex="0" data-index="' + i + '" aria-label="Open the portfolio of ' + name + '">' +
+        '<div class="tp-inner">' +
+          '<div class="tp-face tp-front">' +
+            '<span class="tp-dept">' + escapeHtml(group.heading) + '</span>' +
+            '<div class="tp-photo"><div class="tp-photo-inner">' + escapeHtml(t.emoji || group.emoji || '') + '</div></div>' +
+            '<h3 class="' + nameCls + '">' + name + '</h3>' +
+            '<span class="tp-role">' + escapeHtml(group.department) + ' Department</span>' +
+          '</div>' +
+          '<div class="tp-face tp-back">' +
+            '<div class="tp-lock">&#128274;</div>' +
+            '<span class="tp-back-label">Teacher Portfolio</span>' +
+            '<h3 class="' + nameCls + '">' + name + '</h3>' +
+            '<span class="tp-open">CLICK TO OPEN</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // each dropdown option (the sidebar navigation itself is handled by the shared sidebar handler)
+  document.querySelectorAll('.tp-submenu button[data-group]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      loadTeacherGroup(btn.getAttribute('data-group'));
+    });
+  });
+
+  // ---- a teacher card that has a Google Drive folder: show that folder's sub-folders in the main panel ----
+  function showOnly(sectionEl) {
+    document.querySelectorAll('section').forEach(function (sec) { sec.style.display = 'none'; });
+    sectionEl.style.animation = 'none';
+    void sectionEl.offsetWidth;
+    sectionEl.style.animation = '';
+    sectionEl.style.display = 'block';
+  }
+
+  function openTeacherFolder(group, teacher) {
+    var id = encodeURIComponent(teacher.folderId);
+    var src = 'https://drive.google.com/embeddedfolderview?id=' + id + '#list';
+    tfTitle.textContent = group.heading + '  \u203A  ' + teacher.name;
+    if (tfFrame.getAttribute('src') !== src) tfFrame.setAttribute('src', src);
+    tfOpen.setAttribute('href', 'https://drive.google.com/drive/folders/' + id);
+    showOnly(tfSection);
+  }
+
+  if (tfBack) {
+    tfBack.addEventListener('click', function () { showOnly(tpPortfolioSection); });
+  }
+
+  // ---- password box ----
+  function openTeacherPasswordBox(index, cardEl) {
+    if (!tpGroup) return;
+    var item = teacherList(tpGroup)[index];
+    if (item === undefined) return;
+    var t = (typeof item === 'string') ? { name: item } : item;
+    if (t.folderId) {                       // this teacher has a Drive folder: show it instead of asking for a password
+      openTeacherFolder(tpGroup, t);
+      return;
+    }
+    tpSelected = {
+      name: t.name,
+      index: index,
+      groupId: tpGroup.id,
+      heading: tpGroup.heading,
+      department: tpGroup.department
+    };
+    tpOpener = cardEl || null;
+    tpTitle.textContent = tpGroup.heading.toUpperCase();
+    tpSubtitle.textContent = 'Enter the password for ' + t.name;
+    tpInput.value = '';
+    tpError.textContent = '';
+    tpOverlay.style.display = 'flex';
+    setTimeout(function () { tpInput.focus(); }, 50);
+  }
+
+  function closeTeacherPasswordBox() {
+    tpOverlay.style.display = 'none';
+    tpInput.value = '';
+    if (tpOpener && tpOpener.focus) tpOpener.focus();
+    tpSelected = null;
+    tpOpener = null;
+  }
+
+  function shakeTeacherPasswordBox(message) {
+    tpError.textContent = message || 'Incorrect password. Try again.';
+    tpBox.classList.remove('shake');
+    void tpBox.offsetWidth;
+    tpBox.classList.add('shake');
+    tpInput.focus();
+  }
+
+  // NEXT STEP: this is where the password gets checked and the teacher's portfolio opens.
+  // `teacher` = { name, index, groupId, heading, department }
+  // Nothing is verified yet, and no password is stored in this page.
+  function onTeacherPasswordSubmit(teacher, password) {
+    tpError.textContent = 'Portfolio access is not connected yet.';
+  }
+
+  function submitTeacherPassword() {
+    if (!tpSelected) return;
+    var pw = tpInput.value;
+    if (!pw) {
+      tpError.textContent = 'Please enter the password.';
+      return;
+    }
+    tpError.textContent = '';
+    onTeacherPasswordSubmit(tpSelected, pw);
+  }
+
+  if (tpGrid) {
+    tpGrid.addEventListener('click', function (e) {
+      var card = e.target.closest('.tp-card');
+      if (card) openTeacherPasswordBox(parseInt(card.getAttribute('data-index'), 10), card);
+    });
+    tpGrid.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      var card = e.target.closest('.tp-card');
+      if (!card) return;
+      e.preventDefault();
+      openTeacherPasswordBox(parseInt(card.getAttribute('data-index'), 10), card);
+    });
+  }
+
+  tpSubmit.addEventListener('click', submitTeacherPassword);
+  tpInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') submitTeacherPassword(); });
+  tpClose.addEventListener('click', closeTeacherPasswordBox);
+  tpOverlay.addEventListener('click', function (e) { if (e.target === tpOverlay) closeTeacherPasswordBox(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && tpOverlay.style.display === 'flex') closeTeacherPasswordBox();
+  });
+</script>
+
+<script>
+  // MATH COLLABORATION: the Drive folder is loaded the first time the button is clicked and stays loaded after that.
+  (function () {
+    var btn = document.querySelector('button[data-target="mathcollab"]');
+    var frame = document.getElementById('mathCollabFrame');
+    if (!btn || !frame) return;
+    btn.addEventListener('click', function () {
+      if (!frame.getAttribute('src')) frame.setAttribute('src', frame.getAttribute('data-src'));
+    });
+  })();
+</script>
+
+  </body>
+</html>
