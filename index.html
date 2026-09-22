@@ -8,10 +8,10 @@
     <!-- plugins:css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.5.95/css/materialdesignicons.min.css">
-    <!-- Fonts for the sheet data table: IBM Plex Sans (header) + Nunito Sans (data rows) -->
+    <!-- Fonts: IBM Plex Sans (headers, dropdowns) + Nunito Sans (data rows) + Cinzel (page title) + Poppins (folder bar) + Aref Ruqaa (Arabic title) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@600;700&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@600;700&family=Nunito+Sans:wght@400;500;600&family=Cinzel:wght@600;700&family=Poppins:wght@500;600&family=Aref+Ruqaa:wght@700&display=swap" rel="stylesheet">
 
 <style>
 html, body {
@@ -24,7 +24,8 @@ html, body {
 }
 
 body {
-  padding: 0 20px 0 0; /* top: 0, right: 20px, bottom: 0, left: 0 */
+  box-sizing: border-box;   /* makes the padding part of the 100vw width - without this the 20px sat OFF-screen and the panel touched the right edge */
+  padding: 0 20px 0 0; /* top: 0, right: 20px (= the gap between the main panel and the right edge of the screen), bottom: 0, left: 0 */
 }
 
 /* From Uiverse.io by joe-watson-sbf */ 
@@ -393,7 +394,7 @@ button:active {
   position: fixed;
   top: 0;
   left: 0;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #000;
 }
 
 .navbar .navbar-menu-wrapper {
@@ -402,7 +403,8 @@ button:active {
   flex-grow: 1;
   justify-content: space-between;
 }
-
+.navbar-menu-wrapper > button:first-child { padding-right: 0px; }   /* menu button, side facing the full screen button */
+#fullscreenBtn { padding-left: 0px; }                               /* full screen button, side facing the menu button */
 .navbar h3 {
   color: #ffffff;
   font-size: 1.2rem;
@@ -412,7 +414,7 @@ button:active {
 .page-body-wrapper {
   display: flex;
   flex-direction: row;
-  margin-top: 50px;
+  margin-top:40px;
   transition: margin-left 0.3s ease;
   margin-left: 230px;
 }
@@ -424,9 +426,9 @@ button:active {
 .main-panel {
   flex-grow: 1;
   background-color: #000;
-  padding: 15px;
+  padding: 10px;
   transition: all 0.3s ease;
-  height: calc(100vh - 60px - 42px);
+  height: calc(100vh - 40px - 42px);
   overflow: hidden;   /* no x/y scrolling - everything fits the available height */
 }
 
@@ -437,6 +439,51 @@ button:active {
   color: white;
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+/* ---- Page title in the top bar: CURRICULUM OUTLINE (gold) + school name (white) ---- */
+button.navbar-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  padding: 0 8px;
+  box-shadow: none;
+  cursor: default;
+  font-family: 'Cinzel', 'Times New Roman', Times, serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1;
+  color: #f5c542;
+  white-space: nowrap;
+}
+button.navbar-title::before {                /* it is a title, not an action: no hover "curl" */
+  content: none !important;
+  display: none !important;
+}
+/* Both parts of the title use ONE colour - the same gold as the welcome screen text (change it here) */
+.navbar-title .nt-main {
+  color: #f5c542;
+  letter-spacing: 2.4px;
+}
+.navbar-title .nt-school {
+  color: #f5c542;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+}
+
+/* ONE colour for EVERY sidebar label (HOME, the subject buttons, TEACHER PORTFOLIOS, its dropdown options,
+   MATH COLLABORATION, ADMIN DASHBOARD): the same gold as the animated text on the welcome image.
+   Change it here and it changes everywhere. (Fonts are NOT set here - each label keeps its own font.) */
+.sidebar .menu-title {
+  color: #f5c542;
+}
+/* Sidebar subject buttons with the longer "... CURRICULUM" label: smaller text (wraps to 2 lines if needed) */
+.sidebar .menu-title.menu-title-long {
+  font-size: 15px;
+  line-height: 1.2;
+  letter-spacing: 0.3px;
 }
 
 section {
@@ -841,6 +888,39 @@ button.no-style {
   letter-spacing: 1px;
 }
 
+/* Teacher / folder line under the title: small "FACULTY :" label + the name in large gold text */
+.code-modal-teacher {
+  margin: 0 0 8px;
+  color: #f5c542;
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: 0.4px;
+  overflow-wrap: anywhere;
+}
+.code-modal-teacher-label {
+  color: #9fd3e6;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+.code-modal-teacher-label:empty { display: none; }
+
+/* Admin mode: no access code box / error line / submit button - only a large yellow "Under Development" */
+.code-modal.is-admin .code-modal-input,
+.code-modal.is-admin .code-modal-error,
+.code-modal.is-admin .code-modal-submit {
+  display: none;
+}
+.code-modal-subtitle.under-dev {
+  margin: 8px 0 6px;
+  color: #ffd60a;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 1.5px;
+}
+
 /* ---- Sheet data view: professional card showing the fetched week slice ---- */
 #sheet-data-card {
   height: 100%;
@@ -1109,12 +1189,12 @@ button.no-style {
   overflow-wrap: normal;                     /* never split a word */
   word-break: normal;
   hyphens: none;
-  border-top: 1px solid #d3d9de;
-  border-right: 1px solid #d3d9de;
-  border-bottom: 1px solid #d3d9de;
+  border-top: 2px solid #a8dea1;             /* light green, 2px: every border of the data table */
+  border-right: 2px solid #a8dea1;
+  border-bottom: 2px solid #a8dea1;
   transition: background 0.2s ease, color 0.2s ease;
 }
-.sheet-data-table th:first-child { border-left: 1px solid #d3d9de; }
+.sheet-data-table th:first-child { border-left: 2px solid #a8dea1; }
 
 /* Header of the column the mouse is over (set from JS) */
 .sheet-data-table th.col-hover,
@@ -1158,11 +1238,11 @@ button.no-style {
   overflow-wrap: normal;                     /* never split a word */
   word-break: normal;
   hyphens: none;
-  border-right: 1px solid #d3d9de;
-  border-bottom: 1px solid #d3d9de;
+  border-right: 2px solid #a8dea1;           /* light green, 2px */
+  border-bottom: 2px solid #a8dea1;
   transition: background 0.2s ease, box-shadow 0.2s ease;
 }
-.sheet-data-table td:first-child { border-left: 1px solid #d3d9de; }
+.sheet-data-table td:first-child { border-left: 2px solid #a8dea1; }
 
 .sheet-data-table td:empty::after {
   content: '\2014';                          /* em dash for a blank cell */
@@ -1368,7 +1448,7 @@ button.no-style {
 }
 
 /* =====================================================================
-   TEACHER PORTFOLIOS  (sidebar dropdown + teacher flip-cards + password modal)
+   TEACHER PORTFOLIOS  (sidebar dropdown + teacher flip-cards + access code modal)
    ===================================================================== */
 
 /* ---- sidebar: TEACHER PORTFOLIOS button + dropdown ---- */
@@ -1391,10 +1471,24 @@ button.no-style {
   transition: max-height 0.3s ease;
 }
 .tp-submenu.open { max-height: 260px; }
-.tp-submenu > .menu-item { padding: 2px 2px 2px 18px; }
-.sidebar .tp-submenu .menu-icon { width: 28px; height: 28px; margin-right: 10px; }
-.tp-submenu .menu-icon i { font-size: 14px; }
-.tp-submenu .menu-title { font-size: 13px; }
+/* each dropdown row: icon + text centred vertically, tight spacing between rows */
+.tp-submenu > .menu-item { padding: 0 2px 0 0; height: auto; border-bottom: 2px solid black; }
+.tp-submenu .menu-content { align-items: center; box-sizing: border-box; min-height: 30px; padding: 1px 6px; }
+.sidebar .tp-submenu .menu-icon { width: 26px; height: 26px; margin-right: 6px; flex: 0 0 auto; }
+.tp-submenu .menu-icon .tp-emoji {
+  font-size: 15px;
+  line-height: 1;
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+}
+.tp-submenu .menu-title {
+  margin-left: 10px;
+  font-family: 'IBM Plex Sans', 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  line-height: 1.0;
+color:grey;
+}
 .sidebar.collapsed .menu-caret { display: none; }
 .sidebar.collapsed .tp-submenu > .menu-item { padding-left: 2px; }
 
@@ -1576,45 +1670,280 @@ button.no-style {
 
 .tp-card:focus-visible .tp-front { box-shadow: 0 0 0 3px #f5c542, 0 6px 16px rgba(0, 0, 0, 0.45); }
 
-/* password box: keep the typed text as typed (the access-code box upper-cases it) */
-.tp-pw-input {
-  text-transform: none;
-  letter-spacing: 2px;
-}
-
 /* ---- teacher folder view (sub-folders of the teacher's Google Drive folder) ---- */
 #teacherfolder { height: 100%; }
-.tf-bar {
-  height: 38px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 0 10px 6px;
-  font-family: 'IBM Plex Sans', 'Segoe UI', Roboto, Arial, sans-serif;
-  font-size: 13px;
-  white-space: nowrap;
-}
+/* the folder views have ONE header row, over the panel: [<- Back to teachers] > Folder > Sub-folder > ...   [Open in Google Drive] */
 button.no-style.tf-back {
   display: inline-block;
+  flex: 0 0 auto;
   padding: 3px 10px;
-  border-radius: 8px;
-  color: #f5c542;
-  font-weight: 600;
+  border-radius: 6px;
+  color: #0b6f8f;
+  font-weight: 700;
+  white-space: nowrap;
   cursor: pointer;
 }
 button.no-style.tf-back:hover,
-button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); outline: none; }
-.tf-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; color: #ffffff; font-weight: 600; letter-spacing: 0.3px; }
-.tf-open { color: #9fd3e6; font-size: 12px; text-decoration: none; }
-.tf-open:hover { color: #ffffff; text-decoration: underline; }
-.tf-frame {
+button.no-style.tf-back:focus-visible { background: #d9ecf5; outline: none; }
+.tf-open {
+  flex: 0 0 auto;
+  margin-left: auto;                         /* pushed to the right end of the header */
+  padding-left: 14px;
+  color: #0b6f8f;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.tf-open:hover { color: #10305a; text-decoration: underline; }
+
+/* ---- in-panel folder browser: the folders and files of a teacher's portfolio, shown in the SAME panel ---- */
+.tf-browser {
+  display: flex;
+  flex-direction: column;
+  height: 100%;                              /* the panel fills the whole section: the header row is part of it */
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  font-family: 'Poppins', 'Segoe UI', Roboto, Arial, sans-serif;
+}
+.tf-head {                                   /* the ONE header row, over the panel */
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  box-sizing: border-box;
+  min-height: 40px;
+  padding: 6px 14px;
+  background: #eef5fa;
+  border-bottom: 2px solid #a8dea1;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #1f2d3a;
+}
+.tf-crumbs {                                 /* folder > sub-folder > file : click a name to go back to it */
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+}
+button.no-style.tf-crumb {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  color: #0b6f8f;
+  font-weight: 600;
+  cursor: pointer;
+}
+button.no-style.tf-crumb:hover,
+button.no-style.tf-crumb:focus-visible { background: #d9ecf5; outline: none; }
+.tf-crumb-current { padding: 3px 8px; font-weight: 700; color: #10305a; overflow-wrap: anywhere; }
+.tf-sep { color: #7fa3b5; font-weight: 700; }
+
+.tf-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  box-sizing: border-box;
+  overflow: auto;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 8px;
+  align-content: start;
+  background: #f7fafd;
+  scrollbar-width: thin;
+  scrollbar-color: #b7c3cc #f7fafd;
+}
+button.no-style.tf-item,
+a.tf-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 2px solid #a8dea1;                 /* light green, like the data table */
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1f2d3a;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+button.no-style.tf-item:hover,
+button.no-style.tf-item:focus-visible,
+a.tf-item:hover,
+a.tf-item:focus-visible { background: #e2f1f8; border-color: #7fc4a0; outline: none; }
+.tf-item-icon {
+  flex: 0 0 auto;
+  font-size: 22px;
+  line-height: 1;
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+}
+.tf-item-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.tf-item.is-folder .tf-item-name { font-weight: 600; color: #10305a; }
+.tf-item-ext { flex: 0 0 auto; color: #7fa3b5; font-size: 12px; }
+.tf-msg {
+  grid-column: 1 / -1;
+  padding: 40px 20px;
+  text-align: center;
+  color: #5a6b74;
+  font-size: 14px;
+}
+.tf-msg.error { color: #b3261e; }
+button.no-style.tf-retry {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 6px 18px;
+  border: 2px solid #a8dea1;
+  border-radius: 999px;
+  color: #0b6f8f;
+  font-weight: 600;
+  cursor: pointer;
+}
+button.no-style.tf-retry:hover { background: #e2f1f8; }
+.tf-file {                                   /* the file preview, in the same place as the list */
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  border: 0;
+  background: #ffffff;
+}
+
+/* =====================================================================
+   WELCOME SCREEN (shown when the page loads): full-panel image + animated title
+   ===================================================================== */
+#welcome {
+  position: absolute;                        /* covers the WHOLE main panel, its padding included; the panel clips it to its rounded corners */
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: auto;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, #16324f 0%, #08121d 100%);   /* only visible if the image is missing */
+  animation-duration: 1.4s;                  /* quicker fade-in than the other sections */
+}
+.welcome-img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: block;
   width: 100%;
-  height: calc(100% - 38px);
-  border: 0;
-  border-radius: 18px;
-  background: #ffffff;
+  height: 100%;
+  object-fit: cover;                         /* the image always fills the panel, cropped - never stretched */
+  object-position: center;
+}
+.welcome-shade {                             /* soft dark veil so the text stays readable on any photo - lower the 0.32 / 0.62 to lighten */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.32) 0%, rgba(0, 0, 0, 0.62) 100%);
+}
+.welcome-text {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;                       /* middle center */
+  justify-content: center;
+  padding: 0 5%;
+  text-align: center;
+}
+.wl {
+  margin: 0;
+  text-transform: uppercase;
+}
+.wl-title {                                  /* ACADEMIC DASHBOARD */
+  font-family: 'Cinzel', 'Times New Roman', Times, serif;
+  font-weight: 700;
+  font-size: clamp(24px, 4.2vw, 84px);
+  letter-spacing: 0.08em;
+  line-height: 1.12;
+  color: #f5c542;                            /* same gold as the school name and the Arabic line */
+  text-shadow: 0 3px 20px rgba(0, 0, 0, 0.65), 0 0 34px rgba(245, 197, 66, 0.35);
+}
+.wl-rule {                                   /* thin gold line between the English lines */
+  width: min(46%, 560px);
+  height: 2px;
+  margin: clamp(10px, 1.7vw, 26px) 0;
+  background: linear-gradient(90deg, transparent 0%, #f5c542 22%, #fff2c2 50%, #f5c542 78%, transparent 100%);
+  transform-origin: center;
+  animation: wlRule 12s ease infinite both;
+}
+.wl-sub {                                    /* ALROWAD INTERNATIONAL SCHOOLS */
+  font-family: 'Cinzel', 'Times New Roman', Times, serif;
+  font-weight: 600;
+  font-size: clamp(13px, 2.05vw, 42px);
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  color: #f5c542;                            /* the gold all welcome text uses - change it in the 3 places marked "gold" */
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+}
+.wl-ar {                                     /* مدارس الرواد العالمية */
+  display: inline-block;                     /* shrink to the text, so the reveal runs along the text itself */
+  margin: clamp(10px, 1.6vw, 24px) 0 0;
+  font-family: 'Aref Ruqaa', 'Amiri', 'Traditional Arabic', serif;
+  font-weight: 700;
+  font-size: clamp(24px, 3.7vw, 76px);
+  line-height: 1.35;
+  color: #f5c542;                            /* same gold */
+  text-shadow: 0 3px 16px rgba(0, 0, 0, 0.7);
+  animation: wlArabic 12s linear infinite both;
+}
+
+/* letter by letter (English lines): every letter is its own span, started a little after the previous one.
+   The 12s cycle is the same for all of them, so the wave in -> hold -> wave out repeats for ever. */
+.wl-word { display: inline-block; white-space: nowrap; }
+.wl-ch {
+  display: inline-block;
+  opacity: 0;
+  animation: wlLetter 12s cubic-bezier(0.2, 0.8, 0.2, 1) infinite both;
+}
+@keyframes wlLetter {
+  0%   { opacity: 0; transform: translateY(0.45em) scale(0.6); }
+  4.6% { opacity: 1; transform: translateY(0) scale(1); }
+  78%  { opacity: 1; transform: translateY(0) scale(1); }
+  88%  { opacity: 0; transform: translateY(-0.25em) scale(1.05); }
+  100% { opacity: 0; transform: translateY(0.45em) scale(0.6); }
+}
+/* Arabic letters must stay joined, so they are not split into separate pieces: the line is uncovered
+   step by step from the right (the way Arabic is written), one step per letter */
+@keyframes wlArabic {
+  0%   { opacity: 1; clip-path: inset(-40% -6% -40% 100%); animation-timing-function: steps(21, end); }
+  14%  { opacity: 1; clip-path: inset(-40% -6% -40% -6%); }
+  78%  { opacity: 1; clip-path: inset(-40% -6% -40% -6%); }
+  88%  { opacity: 0; clip-path: inset(-40% -6% -40% -6%); }
+  100% { opacity: 0; clip-path: inset(-40% -6% -40% 100%); }
+}
+@keyframes wlRule {
+  0%   { opacity: 0; transform: scaleX(0); }
+  5%   { opacity: 1; transform: scaleX(1); }
+  78%  { opacity: 1; transform: scaleX(1); }
+  88%  { opacity: 0; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(0); }
+}
+@media (prefers-reduced-motion: reduce) {    /* people who turned animations off get the plain, static text */
+  .wl-ch, .wl-ar, .wl-rule { animation: none; opacity: 1; transform: none; clip-path: none; }
 }
 </style>
 
@@ -1634,10 +1963,23 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
 
       <li class="nav-item menu-items">
         <div class="menu-item">
-          <button class="no-style" data-target="cssat" style="width:100%;">
+          <!-- HOME: shows the welcome image (the page opens on it, so it starts highlighted) -->
+          <button class="no-style" data-target="welcome" style="width:100%;">
             <div class="menu-content active">
+              <span class="menu-icon"><i class="fa fa-home" style="color: #ff9800;"></i></span>
+              <span class="menu-title">HOME</span>
+            </div>
+          </button>
+        </div>
+      </li>
+
+      <li class="nav-item menu-items">
+        <div class="menu-item">
+          <!-- data-subject = the exact subject name the week cards / Apps Script use (NOT the visible text) -->
+          <button class="no-style" data-target="cssat" data-subject="COMPUTER SCIENCE" style="width:100%;">
+            <div class="menu-content">
               <span class="menu-icon"><i class="fa fa-laptop" style="color: #007bff;"></i></span>
-              <span class="menu-title">COMPUTER SCIENCE</span>
+              <span class="menu-title menu-title-long">COMPUTER SCIENCE CURRICULUM</span>
             </div>
           </button>
         </div>
@@ -1646,10 +1988,10 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
 
       <li class="nav-item menu-items">
         <div class="menu-item">
-          <button class="no-style" data-target="math" style="width:100%;">
+          <button class="no-style" data-target="math" data-subject="MATHEMATICS" style="width:100%;">
             <div class="menu-content">
               <span class="menu-icon"><i class="fa fa-calculator" style="color: #28a745;"></i></span>
-              <span class="menu-title">MATHEMATICS</span>
+              <span class="menu-title menu-title-long">MATHEMATICS CURRICULUM</span>
             </div>
           </button>
         </div>
@@ -1670,32 +2012,32 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
             <li class="menu-item">
               <button class="no-style" data-target="teacherportfolio" data-group="math-girls" style="width:100%;">
                 <div class="menu-content">
-                  <span class="menu-icon"><i class="fa fa-female" style="color: #28a745;"></i></span>
-                  <span class="menu-title">Mathematics Girls TP</span>
+                  <span class="menu-icon"><span class="tp-emoji">🧑‍🎓</span></span>
+                  <span class="menu-title">Mathematics Girls</span>
                 </div>
               </button>
             </li>
             <li class="menu-item">
               <button class="no-style" data-target="teacherportfolio" data-group="math-boys" style="width:100%;">
                 <div class="menu-content">
-                  <span class="menu-icon"><i class="fa fa-male" style="color: #28a745;"></i></span>
-                  <span class="menu-title">Mathematics Boys TP</span>
+                  <span class="menu-icon"><span class="tp-emoji">🧑‍🎓</span></span>
+                  <span class="menu-title">Mathematics Boys</span>
                 </div>
               </button>
             </li>
             <li class="menu-item">
               <button class="no-style" data-target="teacherportfolio" data-group="cs-boys" style="width:100%;">
                 <div class="menu-content">
-                  <span class="menu-icon"><i class="fa fa-male" style="color: #007bff;"></i></span>
-                  <span class="menu-title">Computer Boys TP</span>
+                  <span class="menu-icon"><span class="tp-emoji">🧑‍🎓</span></span>
+                  <span class="menu-title">Computer Boys</span>
                 </div>
               </button>
             </li>
             <li class="menu-item">
               <button class="no-style" data-target="teacherportfolio" data-group="cs-girls" style="width:100%;">
                 <div class="menu-content">
-                  <span class="menu-icon"><i class="fa fa-female" style="color: #007bff;"></i></span>
-                  <span class="menu-title">Computer Girls TP</span>
+                  <span class="menu-icon"><span class="tp-emoji">🧑‍🎓</span></span>
+                  <span class="menu-title">Computer Girls</span>
                 </div>
               </button>
             </li>
@@ -1706,7 +2048,8 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
 
 <li class="nav-item menu-items">
         <div class="menu-item">
-          <button class="no-style" data-target="mathcollab" style="width:100%;">
+          <!-- no data-target: the section is only shown after a valid access code (see the MATH COLLABORATION script) -->
+          <button class="no-style" type="button" id="mathCollabBtn" style="width:100%;">
             <div class="menu-content">
               <span class="menu-icon"><i class="fa fa-users" style="color: #00a8cc;"></i></span>
               <span class="menu-title">MATH COLLABORATION</span>
@@ -1717,7 +2060,8 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
 
 <li class="nav-item menu-items">
         <div class="menu-item">
-          <button class="no-style" data-target="math" style="width:100%;">
+          <!-- ADMIN: opens the access code modal with the text "Under Development" (no code is accepted) -->
+          <button class="no-style" type="button" id="adminBtn" style="width:100%;">
             <div class="menu-content">
               <span class="menu-icon"><i class="fa fa-calculator" style="color: #28a745;"></i></span>
               <span class="menu-title">ADMIN DASHBOARD</span>
@@ -1741,8 +2085,8 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" id="fullscreenBtn" title="Toggle fullscreen">
           <span class="mdi mdi-fullscreen" id="fullscreenIcon" style="color:red;"></span>
         </button>
-       <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize" style="color: white; box-shadow: none; font-family: 'Times New Roman', Times, serif; font-weight: bold;">
-  <span>CURRICULUM OUTLINE: ALROWAD INTERNATIONAL SCHOOL</span>
+       <button class="navbar-toggler navbar-toggler align-self-center navbar-title" type="button" data-toggle="minimize">
+  <span class="nt-school">ALROWAD INTERNATIONAL SCHOOLS</span>
 </button>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
           data-toggle="offcanvas">
@@ -1754,7 +2098,7 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
 
 <!-- MAIN MAIN PANEL STARTS----------------------------------------------------->
 
-<div class="main-panel" style="position: relative; background:#000; border-radius:50px; width: 100%; z-index: 1000;">
+<div class="main-panel" style="position: relative; background:#000; border-radius:30px; width: 100%; z-index: 1000;">
 
 <!-- MAIN CURRICULUM DASHBOARD STARTS----------------------------------------------------->
   <section id="maincurriculumdashboard" style="display:none;">
@@ -1802,8 +2146,22 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
 </section>
 <!-- MAIN CURRICULUM DASHBOARD ENDS----------------------------------------------------->
 
+<!-- WELCOME SCREEN STARTS (shown when the page loads; any sidebar button replaces it) --------->
+<section id="welcome">
+  <img class="welcome-img" src="Images/alrowad.png" alt="" onerror="this.style.display='none'">
+  <div class="welcome-shade"></div>
+  <div class="welcome-text">
+    <!-- the script splits the English lines into letters for the letter-by-letter animation -->
+    <h1 class="wl wl-title" id="wlTitle">ACADEMIC DASHBOARD</h1>
+    <div class="wl-rule" id="wlRule"></div>
+    <h2 class="wl wl-sub" id="wlSub">ALROWAD INTERNATIONAL SCHOOLS</h2>
+    <p class="wl-ar" id="wlAr" lang="ar" dir="rtl">مدارس الرواد العالمية</p>
+  </div>
+</section>
+    <!-- WELCOME SCREEN ENDS----------------------------------------------------->
+
 <!-- CS SAT DASHBOARD STARTS----------------------------------------------------->
-<section id="cssat">
+<section id="cssat" style="display:none;">
    <div class="grade-grid" id="cs-week-grid"></div>
 </section>
     <!-- CS SAT SECTION ENDS----------------------------------------------------->
@@ -1826,25 +2184,35 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
 <section id="teacherportfolio" style="display:none;">
   <div class="tp-grid" id="tpGrid"></div>
 </section>
-    <!-- TEACHER FOLDER: shows the sub-folders of a teacher's Google Drive folder (opened from a teacher card) -->
+    <!-- TEACHER FOLDER: shows the sub-folders of a teacher's Google Drive folder (opened from a teacher card, only after a valid access code) -->
 <section id="teacherfolder" style="display:none;">
-  <div class="tf-bar">
-    <button type="button" class="no-style tf-back" id="tfBack">&#8592; Back to teachers</button>
-    <span class="tf-title" id="tfTitle"></span>
-    <a class="tf-open" id="tfOpen" href="#" target="_blank" rel="noopener noreferrer">Open in Google Drive &#8599;</a>
+  <!-- the teacher's folders + files are drawn HERE (listed by the Apps Script): a click on a sub-folder opens it in this same panel.
+       ONE header row over the panel:  <- Back to teachers > Folder > Sub-folder > ...   Open in Google Drive -->
+  <div class="tf-browser">
+    <div class="tf-head">
+      <button type="button" class="no-style tf-back" id="tfBack">&#8592; Back to teachers</button>
+      <span class="tf-sep">&#8250;</span>
+      <div class="tf-crumbs" id="tfCrumbs"></div>
+      <a class="tf-open" id="tfOpen" href="#" target="_blank" rel="noopener noreferrer">Open in Google Drive &#8599;</a>
+    </div>
+    <div class="tf-list" id="tfList"></div>
+    <iframe id="tfFrame" class="tf-file" title="Selected file (Google Drive preview)" style="display:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
   </div>
-  <iframe id="tfFrame" class="tf-frame" title="Teacher folder (Google Drive)"></iframe>
 </section>
 <!-- TEACHER PORTFOLIOS ENDS----------------------------------------------------->
 
-<!-- MATH COLLABORATION: the sub-folders of the shared Google Drive folder, shown in the main panel -->
+<!-- MATH COLLABORATION: the folders and files of the shared Google Drive folder, drawn by the page's own folder browser
+     (so every sub-folder opens in THIS panel). The folder is only known to the Apps Script and is sent after a valid access code. -->
 <section id="mathcollab" style="display:none;">
-  <div class="tf-bar">
-    <span class="tf-title">MATH COLLABORATION</span>
-    <a class="tf-open" href="https://drive.google.com/drive/folders/1tfAEq4nUzQkbp3kzi0PVNuEo1zxLWcGy?usp=drive_link" target="_blank" rel="noopener noreferrer">Open in Google Drive &#8599;</a>
+  <div class="tf-browser">
+    <!-- ONE header row over the panel:  MATH COLLABORATION > Folder > Sub-folder > ...   Open in Google Drive -->
+    <div class="tf-head">
+      <div class="tf-crumbs" id="collabCrumbs"></div>
+      <a class="tf-open" id="collabOpen" href="#" target="_blank" rel="noopener noreferrer">Open in Google Drive &#8599;</a>
+    </div>
+    <div class="tf-list" id="collabList"></div>
+    <iframe id="collabFrame" class="tf-file" title="Selected file (Google Drive preview)" style="display:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
   </div>
-  <iframe id="mathCollabFrame" class="tf-frame" title="Math Collaboration (Google Drive)"
-          data-src="https://drive.google.com/embeddedfolderview?id=1tfAEq4nUzQkbp3kzi0PVNuEo1zxLWcGy#list"></iframe>
 </section>
     <!-- MATH COLLABORATION ENDS----------------------------------------------------->
 
@@ -1855,35 +2223,25 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
   </div> <!-- page-body-wrapper -->
 
  <footer class="footer"style="text-align:center;font-family: 'Times New Roman', Times, serif;color:grey;position:fixed;left:250px;right:0;bottom:4px;height:15px;background:transparent;z-index:1500;margin:0;font-size:12px;">
-          <span class="text-muted">| Department of Computer Science | Al - Rowad International Schools  |  (الرواد العالمية)  | </span>
+          <span class="text-muted">| Directorate of Education | Al - Rowad International Schools  |  (الرواد العالمية)  | </span>
         </footer>
 
-<!-- ACCESS CODE MODAL: shown when a week card's flipback button is clicked.
-     Which Google Sheet gets loaded depends entirely on which valid code is
-     entered - CS2022 loads Sheet 1, MT2121 loads Sheet 2. Nothing loads on
-     a wrong code. -->
+<!-- ACCESS CODE MODAL: one modal, three uses (the mode is set by the script):
+       - week card flipback button -> the code decides which Google Sheet gets loaded (checked by the Apps Script)
+       - teacher flip-card         -> shows "FACULTY : NAME"; the code is checked by the Apps Script;
+                                      the Drive folder loads only if it is valid
+       - MATH COLLABORATION button -> same check; the Drive folder is shown/loaded only if the code is valid
+       - ADMIN DASHBOARD button    -> no code box at all, just a large yellow "Under Development" -->
 <div id="codeModalOverlay" class="code-modal-overlay" style="display:none;">
   <div class="code-modal">
     <button type="button" class="code-modal-close" id="codeModalClose" aria-label="Close">&times;</button>
     <div class="code-modal-icon"><i class="fa fa-key"></i></div>
-    <h3 class="code-modal-title">ENTER ACCESS CODE</h3>
-    <p class="code-modal-subtitle">Enter your access code to view the sheet</p>
+    <h3 class="code-modal-title" id="codeModalTitle">ENTER ACCESS CODE</h3>
+    <div class="code-modal-teacher" id="codeModalTeacher" style="display:none;"><span class="code-modal-teacher-label" id="codeModalTeacherLabel"></span><span id="codeModalTeacherName"></span></div>
+    <p class="code-modal-subtitle" id="codeModalSubtitle">Enter your access code to view the sheet</p>
     <input type="text" id="codeModalInput" class="code-modal-input" placeholder="Access code" autocomplete="off" autocapitalize="characters">
     <div class="code-modal-error" id="codeModalError"></div>
     <button type="button" class="code-modal-submit" id="codeModalSubmit">SUBMIT</button>
-  </div>
-</div>
-
-<!-- TEACHER PASSWORD MODAL: opens when a teacher's flip-card is clicked -->
-<div id="tpPwOverlay" class="code-modal-overlay" style="display:none;">
-  <div class="code-modal" id="tpPwBox" role="dialog" aria-modal="true" aria-labelledby="tpPwTitle">
-    <button type="button" class="code-modal-close" id="tpPwClose" aria-label="Close">&times;</button>
-    <div class="code-modal-icon"><i class="fa fa-lock"></i></div>
-    <h3 class="code-modal-title" id="tpPwTitle">TEACHER PORTFOLIO</h3>
-    <p class="code-modal-subtitle" id="tpPwSubtitle">Enter the password to continue</p>
-    <input type="password" id="tpPwInput" class="code-modal-input tp-pw-input" placeholder="Password" autocomplete="off">
-    <div class="code-modal-error" id="tpPwError"></div>
-    <button type="button" class="code-modal-submit" id="tpPwSubmit">SUBMIT</button>
   </div>
 </div>
 
@@ -2099,12 +2457,16 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
 
   // On page load the week cards must already carry the name of the sidebar button that is
   // highlighted (e.g. "COMPUTER SCIENCE"). That name is what the access code is checked against.
+  // It comes from the button's data-subject (NOT its visible text, which now reads "... CURRICULUM").
   (function () {
     var activeContent = document.querySelector('.sidebar .menu-content.active');
     var activeBtn = activeContent ? activeContent.closest('button[data-target]') : null;
     var activeTitle = activeContent ? activeContent.querySelector('.menu-title') : null;
-    if (activeBtn && activeTitle) {
-      applySidebarLabel(deptKeyForTarget(activeBtn.getAttribute('data-target')), activeTitle.textContent.trim());
+    var activeTarget = activeBtn ? activeBtn.getAttribute('data-target') : '';
+    // only the two week-card sections take a label from the sidebar (HOME is highlighted on load and must not rename them)
+    if (activeBtn && activeTitle && (activeTarget === 'cssat' || activeTarget === 'math')) {
+      applySidebarLabel(deptKeyForTarget(activeTarget),
+                        activeBtn.getAttribute('data-subject') || activeTitle.textContent.trim());
     }
   })();
 </script>
@@ -2158,13 +2520,15 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
       }
 
       // Sidebar buttons carry a .menu-title span (the overview cards'
-      // EXPLORE buttons don't) - when one is clicked, copy its own text
-      // straight onto that department's week card labels.
+      // EXPLORE buttons don't) - when one is clicked, copy its subject name
+      // (data-subject, e.g. "COMPUTER SCIENCE") straight onto that
+      // department's week card labels. The visible sidebar text ("... CURRICULUM")
+      // is display only and never reaches the week cards or the server.
       const titleEl = this.querySelector('.menu-title');
       // Only the two week-card sections take their label from the sidebar
       // (the portfolio button must not rename the Computer Science week cards)
       if (titleEl && (targetId === 'cssat' || targetId === 'math')) {
-        applySidebarLabel(deptKeyForTarget(targetId), titleEl.textContent.trim());
+        applySidebarLabel(deptKeyForTarget(targetId), this.getAttribute('data-subject') || titleEl.textContent.trim());
       }
     });
   });
@@ -2295,19 +2659,56 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
   var pendingWeekNum = null;
   var pendingSubjectLabel = '';
 
-  function openCodeModal(weekNum, subjectLabel) {
-    pendingWeekNum = weekNum;
-    pendingSubjectLabel = subjectLabel;
+  // The same modal serves 4 things:
+  //   'week'    -> week card flipback button (loads a sheet week, checked by the Apps Script)
+  //   'teacher' -> teacher flip-card (checked by the Apps Script; the Drive folder loads only if valid)
+  //   'collab'  -> MATH COLLABORATION button (same check; the Drive folder loads only if valid)
+  //   'admin'   -> ADMIN DASHBOARD button (no code box, only a large yellow "Under Development")
+  var codeModalMode = 'week';
+  var codeModalOnClose = null;            // optional callback, runs once when the modal closes
+  var codeTitleEl = document.getElementById('codeModalTitle');
+  var codeTeacherEl = document.getElementById('codeModalTeacher');
+  var codeTeacherLabelEl = document.getElementById('codeModalTeacherLabel');
+  var codeTeacherNameEl = document.getElementById('codeModalTeacherName');
+  var codeSubtitleEl = document.getElementById('codeModalSubtitle');
+  var CODE_TITLE_DEFAULT = 'ENTER ACCESS CODE';
+  var CODE_SUBTITLE_DEFAULT = 'Enter your access code to view the sheet';
+
+  // info (optional) = { label: 'FACULTY : ', name: 'Some Name' } - shown between the title and the subtitle.
+  // The name is always shown in UPPERCASE. 'label' may be '' (nothing is shown before the name).
+  function showCodeModal(mode, title, subtitle, onClose, info) {
+    var isAdmin = (mode === 'admin');
+    var hasInfo = !!(info && info.name);
+    codeModalMode = mode;
+    codeModalOnClose = onClose || null;
+    codeTitleEl.textContent = title;
+    codeTeacherLabelEl.textContent = hasInfo ? (info.label || '') : '';
+    codeTeacherNameEl.textContent = hasInfo ? String(info.name).toUpperCase() : '';
+    codeTeacherEl.style.display = hasInfo ? 'block' : 'none';
+    codeSubtitleEl.textContent = subtitle;
+    codeSubtitleEl.classList.toggle('under-dev', isAdmin);   // large yellow text
+    codeBox.classList.toggle('is-admin', isAdmin);           // hides the code box, error line and SUBMIT button
     codeInput.value = '';
     codeError.textContent = '';
     codeSubmit.disabled = false;
     codeSubmit.textContent = 'SUBMIT';
     codeOverlay.style.display = 'flex';
-    setTimeout(function () { codeInput.focus(); }, 50);
+    if (!isAdmin) setTimeout(function () { codeInput.focus(); }, 50);
+  }
+
+  function openCodeModal(weekNum, subjectLabel) {
+    pendingWeekNum = weekNum;
+    pendingSubjectLabel = subjectLabel;
+    showCodeModal('week', CODE_TITLE_DEFAULT, CODE_SUBTITLE_DEFAULT, null);
   }
 
   function closeCodeModal() {
     codeOverlay.style.display = 'none';
+    if (codeModalOnClose) {
+      var cb = codeModalOnClose;
+      codeModalOnClose = null;
+      cb();
+    }
   }
 
   function rejectCode(message) {
@@ -2640,11 +3041,30 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
   });
 
   function submitCode() {
+    // ADMIN: still under development - no code is ever accepted (nothing is even sent to the server)
+    if (codeModalMode === 'admin') {
+      rejectCode('Under Development. Access is not available yet.');
+      return;
+    }
+
     const raw = codeInput.value;
     if (!raw) {
       codeError.textContent = 'Please enter an access code.';
       return;
     }
+
+    // TEACHER PORTFOLIOS: the code is checked by the Apps Script (see submitTeacherCode in the teacher script)
+    if (codeModalMode === 'teacher') {
+      submitTeacherCode(raw);
+      return;
+    }
+
+    // MATH COLLABORATION: same check (see submitCollabCode in the MATH COLLABORATION script)
+    if (codeModalMode === 'collab') {
+      submitCollabCode(raw);
+      return;
+    }
+
     if (!pendingWeekNum) return;
 
     const code = raw.trim().toUpperCase();
@@ -2690,6 +3110,22 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
   codeCloseBtn.addEventListener('click', closeCodeModal);
   codeOverlay.addEventListener('click', function (e) { if (e.target === codeOverlay) closeCodeModal(); });
 
+  // ADMIN DASHBOARD button: same modal, but with no code box - only a large yellow "Under Development"
+  var adminBtn = document.getElementById('adminBtn');
+  if (adminBtn) {
+    adminBtn.addEventListener('click', function () {
+      showCodeModal('admin', 'ADMIN DASHBOARD', 'Under Development', null);
+    });
+  }
+
+  // Esc closes the modal (capture phase, so it doesn't also trigger the EDIT-mode Esc handler above)
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && codeOverlay.style.display === 'flex') {
+      e.stopPropagation();
+      closeCodeModal();
+    }
+  }, true);
+
   // Delegated on the document so it keeps working no matter when/how the
   // week cards were built, and only fires for the flipback's own button
   // (the week card back's .flipback-explore-btn, identified by data-dept -
@@ -2714,27 +3150,29 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
   });
 </script>
 
-
-
 <script>
   // =====================================================================
   //  TEACHER PORTFOLIOS
   //  Sidebar: TEACHER PORTFOLIOS > dropdown (4 options). Each option loads 20 teacher
-  //  flip-cards (5 per row x 4 rows). Clicking a card opens the password box.
+  //  flip-cards (5 per row x 4 rows). Clicking a card opens the ACCESS CODE modal
+  //  (the same modal the week cards use). Neither the code NOR the Google Drive folder IDs are
+  //  stored in this page: the Apps Script checks the code (action=teacherAccess) and, only if it
+  //  is valid, sends back the folder ID of that card - only then is the folder loaded.
   // =====================================================================
 
   // Teacher names for each dropdown option (20 cards per option).
-  //   heading    = text shown on the cards / in the password box (same as the dropdown option)
+  //   heading    = text shown on the cards (same as the dropdown option)
   //   department = shown under each teacher's name
   //   emoji      = stands in for the photo (all cards use the student emoji; a teacher can override it with { name, emoji })
   //   padDummy   = if fewer than 20 names are listed, dummy names ("Teacher Name 14"...) are added at the end
-  //   { name, folderId } = a teacher with a Google Drive folder: clicking the card shows that folder's sub-folders
+  // Google Drive folders are NOT stored in this page. They live in the Apps Script (Code.gs: TEACHER_FOLDERS / GROUP_PARENT_FOLDERS)
+  // and the page only receives the clicked teacher's folder ID after the access code has been accepted.
   // All four options now use real names (dummy names fill the free cards).
   var TEACHER_GROUPS = [
     { id: 'math-girls', heading: 'Mathematics Girls TP', department: 'Mathematics', emoji: '🧑‍🎓',
       padDummy: true,
       teachers: [
-        { name: 'Uzma Farzeen', folderId: '1XGQeepYjyoMUQMxbobLvhYJU6-Q8ZiNn' },   // clicking this card shows this Drive folder's sub-folders
+        'Uzma Farzeen',
         'Suha Bassam Olayan', 'Saja Hmdan Mohamed Elzaghal',
         'Rania Wessam Abdelmanem Rashed', 'Nour Mohammed Kekshan',
         'Nahl Osama Mahmoud', 'Naheel Mohammad Solyman',
@@ -2784,25 +3222,18 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
   var tpToggle = document.getElementById('tpToggleBtn');
   var tpSubmenu = document.getElementById('tpSubmenu');
   var tpGrid = document.getElementById('tpGrid');
-  var tpOverlay = document.getElementById('tpPwOverlay');
-  var tpBox = document.getElementById('tpPwBox');
-  var tpTitle = document.getElementById('tpPwTitle');
-  var tpInput = document.getElementById('tpPwInput');
-  var tpError = document.getElementById('tpPwError');
-  var tpSubtitle = document.getElementById('tpPwSubtitle');
-  var tpSubmit = document.getElementById('tpPwSubmit');
-  var tpClose = document.getElementById('tpPwClose');
 
   var tfBack = document.getElementById('tfBack');
-  var tfTitle = document.getElementById('tfTitle');
   var tfOpen = document.getElementById('tfOpen');
   var tfFrame = document.getElementById('tfFrame');
   var tfSection = document.getElementById('teacherfolder');
+  var tfCrumbs = document.getElementById('tfCrumbs');
+  var tfList = document.getElementById('tfList');
   var tpPortfolioSection = document.getElementById('teacherportfolio');
 
   var tpGroup = null;         // the group (dropdown option) whose cards are on screen
   var tpSelected = null;      // the teacher whose card was clicked
-  var tpOpener = null;        // the card element (focus goes back to it when the box closes)
+  var tpOpener = null;        // the card element (focus goes back to it when the modal closes)
 
   // ---- dropdown open / close ----
   if (tpToggle && tpSubmenu) {
@@ -2859,6 +3290,7 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
   });
 
   // ---- a teacher card that has a Google Drive folder: show that folder's sub-folders in the main panel ----
+  // (only ever called AFTER the Apps Script has accepted the access code)
   function showOnly(sectionEl) {
     document.querySelectorAll('section').forEach(function (sec) { sec.style.display = 'none'; });
     sectionEl.style.animation = 'none';
@@ -2867,29 +3299,217 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
     sectionEl.style.display = 'block';
   }
 
-  function openTeacherFolder(group, teacher) {
-    var id = encodeURIComponent(teacher.folderId);
-    var src = 'https://drive.google.com/embeddedfolderview?id=' + id + '#list';
-    tfTitle.textContent = group.heading + '  \u203A  ' + teacher.name;
-    if (tfFrame.getAttribute('src') !== src) tfFrame.setAttribute('src', src);
-    tfOpen.setAttribute('href', 'https://drive.google.com/drive/folders/' + id);
+  // ---- the folder browser: folders and files shown INSIDE a panel ----
+  // Google's embedded folder view opens every sub-folder in a NEW window, and a web page cannot change that.
+  // So the Apps Script lists the folders (action=folderList) and they are drawn here instead: a click on a
+  // sub-folder opens it in this same panel (the breadcrumbs above go back up), a click on a file previews it here too.
+  // The access code is only kept in memory (never written in the page) and is sent again with every request.
+  // createFolderBrowser() builds ONE browser on the elements of a section. The TEACHER PORTFOLIOS and
+  // MATH COLLABORATION each get their own (they never share state).
+  function tfIcon(mime) {
+    mime = String(mime || '');
+    if (mime.indexOf('image/') === 0) return '\uD83D\uDDBC\uFE0F';                  // picture
+    if (mime.indexOf('video/') === 0) return '\uD83C\uDFAC';                         // clapper board
+    if (mime.indexOf('audio/') === 0) return '\uD83C\uDFB5';                         // note
+    if (mime === 'application/pdf') return '\uD83D\uDCD5';                           // red book
+    if (/document|word|rtf|text\/plain/.test(mime)) return '\uD83D\uDCC4';          // page
+    if (/spreadsheet|excel|csv/.test(mime)) return '\uD83D\uDCCA';                   // bar chart
+    if (/presentation|powerpoint/.test(mime)) return '\uD83D\uDCFD\uFE0F';          // projector
+    if (/zip|rar|7z|compressed/.test(mime)) return '\uD83D\uDDDC\uFE0F';            // archive
+    return '\uD83D\uDCCE';                                                          // paperclip
+  }
+
+  // o = { section, crumbs, list, frame, openLink }  (the elements of one section)
+  // returns { open(access, root), stop() }
+  //   open({ code, groupId, teacher }, { id, name })  shows that folder (call it only AFTER the code was accepted)
+  //   stop()                                          stops a playing preview / ignores a reply still on its way
+  function createFolderBrowser(o) {
+    var sectionEl = o.section, crumbsEl = o.crumbs, listEl = o.list, frameEl = o.frame, openLinkEl = o.openLink;
+    var access = null;                    // { code, groupId, teacher } of the folder on screen
+    var path = [];                        // the folders opened so far: [{ id, name }], the first folder first
+    var file = null;                      // the file being previewed (or null)
+    var filesById = {};                   // the files of the folder on screen
+    var cache = {};                       // folder id -> listing already received (so going back is instant)
+    var token = 0;                        // a late reply to an older click is ignored
+
+    function clearFrame() {
+      if (frameEl.getAttribute('src')) frameEl.setAttribute('src', 'about:blank');   // stops a playing video / audio
+    }
+
+    function showList() {
+      clearFrame();
+      frameEl.style.display = 'none';
+      listEl.style.display = 'grid';
+    }
+
+    function renderCrumbs() {
+      var html = '';
+      path.forEach(function (p, i) {
+        var isCurrent = (i === path.length - 1) && !file;
+        if (i > 0) html += '<span class="tf-sep">\u203A</span>';
+        html += isCurrent
+          ? '<span class="tf-crumb-current">' + escapeHtml(p.name) + '</span>'
+          : '<button type="button" class="no-style tf-crumb" data-level="' + i + '">' + escapeHtml(p.name) + '</button>';
+      });
+      if (file) html += '<span class="tf-sep">\u203A</span><span class="tf-crumb-current">' + escapeHtml(file.name) + '</span>';
+      crumbsEl.innerHTML = html;
+    }
+
+    function showError(message) {
+      listEl.innerHTML = '<div class="tf-msg error">' + escapeHtml(message) +
+        '<br><button type="button" class="no-style tf-retry" data-act="retry">Try again</button></div>';
+    }
+
+    function renderList(data) {
+      var collator = (window.Intl && Intl.Collator) ? new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' }) : null;
+      function byName(a, b) {
+        if (collator) return collator.compare(a.name, b.name);
+        return a.name < b.name ? -1 : (a.name > b.name ? 1 : 0);
+      }
+
+      var html = '';
+      filesById = {};
+      (data.folders || []).slice().sort(byName).forEach(function (f) {
+        html += '<button type="button" class="no-style tf-item is-folder" data-kind="folder" data-id="' + escapeHtml(f.id) +
+                '" data-name="' + escapeHtml(f.name) + '" title="' + escapeHtml(f.name) + '">' +
+                  '<span class="tf-item-icon" aria-hidden="true">\uD83D\uDCC1</span>' +
+                  '<span class="tf-item-name">' + escapeHtml(f.name) + '</span>' +
+                '</button>';
+      });
+      (data.files || []).slice().sort(byName).forEach(function (f) {
+        filesById[f.id] = f;
+        if (f.preview) {
+          html += '<button type="button" class="no-style tf-item" data-kind="file" data-id="' + escapeHtml(f.id) + '" title="' + escapeHtml(f.name) + '">' +
+                    '<span class="tf-item-icon" aria-hidden="true">' + tfIcon(f.mime) + '</span>' +
+                    '<span class="tf-item-name">' + escapeHtml(f.name) + '</span>' +
+                  '</button>';
+        } else {
+          // this kind of item cannot be shown inside the panel (a Google Form, a shortcut ...): an explicit link to Google Drive
+          html += '<a class="tf-item" href="' + escapeHtml(f.url || '#') + '" target="_blank" rel="noopener noreferrer" title="Opens in Google Drive">' +
+                    '<span class="tf-item-icon" aria-hidden="true">' + tfIcon(f.mime) + '</span>' +
+                    '<span class="tf-item-name">' + escapeHtml(f.name) + '</span>' +
+                    '<span class="tf-item-ext" aria-hidden="true">\u2197</span>' +
+                  '</a>';
+        }
+      });
+      if (!html) html = '<div class="tf-msg">This folder is empty.</div>';
+      if (data.truncated) html += '<div class="tf-msg">This folder is very large: only the first items are shown.</div>';
+      listEl.innerHTML = html;
+      listEl.scrollTop = 0;
+    }
+
+    // loads (or re-shows) the LAST folder of the path
+    function load() {
+      var cur = path[path.length - 1];
+      file = null;
+      showList();
+      renderCrumbs();
+      openLinkEl.setAttribute('href', 'https://drive.google.com/drive/folders/' + encodeURIComponent(cur.id));   // the "Open in Google Drive" link follows the folder
+
+      if (cache[cur.id]) { renderList(cache[cur.id]); return; }
+
+      var myToken = ++token;
+      listEl.innerHTML = '<div class="tf-msg">Loading\u2026</div>';
+      var url = SCRIPT_URL + '?action=folderList&code=' + encodeURIComponent(access.code) +
+                '&group=' + encodeURIComponent(access.groupId) +
+                '&teacher=' + encodeURIComponent(access.teacher || '') +
+                '&folder=' + encodeURIComponent(cur.id);
+
+      fetch(url)
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (myToken !== token) return;              // a newer click has taken over
+          if (data && data.success) {
+            cache[cur.id] = data;
+            renderList(data);
+          } else {
+            showError(data && data.error ? data.error : 'Could not load this folder.');
+          }
+        })
+        .catch(function (err) {
+          if (myToken !== token) return;
+          showError('Could not reach the server. Check your connection.');
+          console.error('Folder list failed:', err);
+        });
+    }
+
+    // a file: previewed in the same panel, in place of the list
+    function showFile(f) {
+      file = f;
+      renderCrumbs();
+      listEl.style.display = 'none';
+      frameEl.style.display = 'block';
+      frameEl.setAttribute('src', f.preview);
+    }
+
+    // click on a sub-folder / file
+    listEl.addEventListener('click', function (e) {
+      if (e.target.closest('[data-act="retry"]')) { load(); return; }
+      var item = e.target.closest('button.tf-item');
+      if (!item) return;
+      if (item.getAttribute('data-kind') === 'folder') {
+        path.push({ id: item.getAttribute('data-id'), name: item.getAttribute('data-name') });   // opens IN THIS PANEL
+        load();
+      } else {
+        var f = filesById[item.getAttribute('data-id')];
+        if (f) showFile(f);
+      }
+    });
+
+    // click on a breadcrumb: back to that folder
+    crumbsEl.addEventListener('click', function (e) {
+      var crumb = e.target.closest('.tf-crumb');
+      if (!crumb) return;
+      path = path.slice(0, parseInt(crumb.getAttribute('data-level'), 10) + 1);
+      load();
+    });
+
+    // leaving the section through any sidebar button hides it: stop a playing video / audio preview
+    if (window.MutationObserver && sectionEl) {
+      new MutationObserver(function () {
+        if (sectionEl.style.display === 'none') clearFrame();
+      }).observe(sectionEl, { attributes: true, attributeFilter: ['style'] });
+    }
+
+    return {
+      open: function (acc, root) {
+        access = acc;
+        path = [{ id: root.id, name: root.name }];
+        file = null;
+        cache = {};
+        load();
+      },
+      stop: function () {
+        token++;
+        clearFrame();
+      }
+    };
+  }
+
+  // the browser of the TEACHER PORTFOLIOS section
+  var teacherBrowser = createFolderBrowser({ section: tfSection, crumbs: tfCrumbs, list: tfList, frame: tfFrame, openLink: tfOpen });
+
+  // called only AFTER the Apps Script has accepted the access code (code = the one that was accepted)
+  function openTeacherFolder(group, teacher, code) {
+    if (tfBack) tfBack.setAttribute('title', 'Back to ' + group.heading);   // hover hint on the back button
     showOnly(tfSection);
+    teacherBrowser.open({ code: code, groupId: group.id, teacher: teacher.name }, { id: teacher.folderId, name: teacher.name });
   }
 
   if (tfBack) {
-    tfBack.addEventListener('click', function () { showOnly(tpPortfolioSection); });
+    tfBack.addEventListener('click', function () {
+      teacherBrowser.stop();
+      showOnly(tpPortfolioSection);
+    });
   }
 
-  // ---- password box ----
-  function openTeacherPasswordBox(index, cardEl) {
+  // ---- access code modal (the same modal the week cards use) ----
+  function openTeacherAccessModal(index, cardEl) {
     if (!tpGroup) return;
     var item = teacherList(tpGroup)[index];
     if (item === undefined) return;
     var t = (typeof item === 'string') ? { name: item } : item;
-    if (t.folderId) {                       // this teacher has a Drive folder: show it instead of asking for a password
-      openTeacherFolder(tpGroup, t);
-      return;
-    }
+
     tpSelected = {
       name: t.name,
       index: index,
@@ -2898,81 +3518,208 @@ button.no-style.tf-back:focus-visible { background: rgba(245, 197, 66, 0.15); ou
       department: tpGroup.department
     };
     tpOpener = cardEl || null;
-    tpTitle.textContent = tpGroup.heading.toUpperCase();
-    tpSubtitle.textContent = 'Enter the password for ' + t.name;
-    tpInput.value = '';
-    tpError.textContent = '';
-    tpOverlay.style.display = 'flex';
-    setTimeout(function () { tpInput.focus(); }, 50);
+
+    // "FACULTY : NAME" is shown in the modal (between the title and the subtitle); the name is shown in UPPERCASE
+    showCodeModal('teacher', 'ENTER ACCESS CODE', 'Enter the access code to open this portfolio', function () {
+      // runs when the modal closes (cancelled or accepted)
+      if (tpOpener && tpOpener.focus) tpOpener.focus();
+      tpSelected = null;
+      tpOpener = null;
+    }, { label: 'FACULTY : ', name: t.name });
   }
 
-  function closeTeacherPasswordBox() {
-    tpOverlay.style.display = 'none';
-    tpInput.value = '';
-    if (tpOpener && tpOpener.focus) tpOpener.focus();
-    tpSelected = null;
-    tpOpener = null;
-  }
+  // Called by submitCode() when the modal is in 'teacher' mode.
+  // The code is NOT in this page: the Apps Script checks it (action=teacherAccess).
+  // The Drive folder is only loaded after the server answers success.
+  function submitTeacherCode(raw) {
+    var selected = tpSelected;
+    if (!selected) return;
 
-  function shakeTeacherPasswordBox(message) {
-    tpError.textContent = message || 'Incorrect password. Try again.';
-    tpBox.classList.remove('shake');
-    void tpBox.offsetWidth;
-    tpBox.classList.add('shake');
-    tpInput.focus();
-  }
+    var code = raw.trim().toUpperCase();
+    codeError.textContent = '';
+    codeSubmit.disabled = true;
+    codeSubmit.textContent = 'CHECKING...';
 
-  // NEXT STEP: this is where the password gets checked and the teacher's portfolio opens.
-  // `teacher` = { name, index, groupId, heading, department }
-  // Nothing is verified yet, and no password is stored in this page.
-  function onTeacherPasswordSubmit(teacher, password) {
-    tpError.textContent = 'Portfolio access is not connected yet.';
-  }
+    // the group + teacher name tell the Apps Script which folder belongs to this card
+    var url = SCRIPT_URL + '?action=teacherAccess&code=' + encodeURIComponent(code) +
+              '&group=' + encodeURIComponent(selected.groupId) +
+              '&teacher=' + encodeURIComponent(selected.name);
 
-  function submitTeacherPassword() {
-    if (!tpSelected) return;
-    var pw = tpInput.value;
-    if (!pw) {
-      tpError.textContent = 'Please enter the password.';
-      return;
-    }
-    tpError.textContent = '';
-    onTeacherPasswordSubmit(tpSelected, pw);
+    fetch(url)
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        codeSubmit.disabled = false;
+        codeSubmit.textContent = 'SUBMIT';
+        if (tpSelected !== selected) return;          // the modal was closed while checking
+
+        if (data && data.success) {
+          if (data.folderId) {
+            closeCodeModal();
+            // only now (code accepted, this teacher's folder ID received from the Apps Script) is the folder loaded
+            openTeacherFolder({ id: selected.groupId, heading: selected.heading }, { name: selected.name, folderId: data.folderId }, code);
+          } else {
+            // no folder for this teacher (or the Apps Script could not read Drive: it says why in folderError)
+            codeError.textContent = data.folderError || 'Code accepted, but no portfolio folder is linked for this teacher yet.';
+          }
+        } else {
+          rejectCode(data && data.error ? data.error : 'Invalid access code. Try again.');
+        }
+      })
+      .catch(function (err) {
+        codeSubmit.disabled = false;
+        codeSubmit.textContent = 'SUBMIT';
+        codeError.textContent = 'Could not reach the server. Check your connection.';
+        console.error('Teacher access check failed:', err);
+      });
   }
 
   if (tpGrid) {
     tpGrid.addEventListener('click', function (e) {
       var card = e.target.closest('.tp-card');
-      if (card) openTeacherPasswordBox(parseInt(card.getAttribute('data-index'), 10), card);
+      if (card) openTeacherAccessModal(parseInt(card.getAttribute('data-index'), 10), card);
     });
     tpGrid.addEventListener('keydown', function (e) {
       if (e.key !== 'Enter' && e.key !== ' ') return;
       var card = e.target.closest('.tp-card');
       if (!card) return;
       e.preventDefault();
-      openTeacherPasswordBox(parseInt(card.getAttribute('data-index'), 10), card);
+      openTeacherAccessModal(parseInt(card.getAttribute('data-index'), 10), card);
     });
   }
-
-  tpSubmit.addEventListener('click', submitTeacherPassword);
-  tpInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') submitTeacherPassword(); });
-  tpClose.addEventListener('click', closeTeacherPasswordBox);
-  tpOverlay.addEventListener('click', function (e) { if (e.target === tpOverlay) closeTeacherPasswordBox(); });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && tpOverlay.style.display === 'flex') closeTeacherPasswordBox();
-  });
 </script>
 
 <script>
-  // MATH COLLABORATION: the Drive folder is loaded the first time the button is clicked and stays loaded after that.
+  // WELCOME SCREEN: letter-by-letter animation
+  // Every letter of the two English lines becomes its own span with a growing animation-delay
+  // (title first, then the gold line, then the school name, then the Arabic line).
+  // The CSS keyframes (12s cycle) repeat for ever, so the wave in -> hold -> wave out never stops.
   (function () {
-    var btn = document.querySelector('button[data-target="mathcollab"]');
-    var frame = document.getElementById('mathCollabFrame');
-    if (!btn || !frame) return;
-    btn.addEventListener('click', function () {
-      if (!frame.getAttribute('src')) frame.setAttribute('src', frame.getAttribute('data-src'));
-    });
+    var STEP_TITLE = 0.075;                 // seconds between two letters of ACADEMIC DASHBOARD
+    var STEP_SUB = 0.05;                    // ... and of ALROWAD INTERNATIONAL SCHOOLS
+
+    // replaces the text of `el` by one span per letter (words stay together, so lines only wrap between words)
+    function splitLetters(el, step, startDelay) {
+      var text = el.textContent.replace(/\s+/g, ' ').trim();
+      var words = text.split(' ');
+      var n = 0;
+      el.setAttribute('aria-label', text);  // screen readers read the sentence, not single letters
+      el.textContent = '';
+      words.forEach(function (word, wi) {
+        var w = document.createElement('span');
+        w.className = 'wl-word';
+        w.setAttribute('aria-hidden', 'true');
+        Array.prototype.forEach.call(word, function (ch) {
+          var c = document.createElement('span');
+          c.className = 'wl-ch';
+          c.textContent = ch;
+          c.style.animationDelay = (startDelay + n * step).toFixed(2) + 's';
+          n++;
+          w.appendChild(c);
+        });
+        el.appendChild(w);
+        if (wi < words.length - 1) el.appendChild(document.createTextNode(' '));
+      });
+      return n;
+    }
+
+    var title = document.getElementById('wlTitle');
+    var rule = document.getElementById('wlRule');
+    var sub = document.getElementById('wlSub');
+    var ar = document.getElementById('wlAr');
+    if (!title || !sub) return;
+
+    var t = 0.3;
+    t += splitLetters(title, STEP_TITLE, t) * STEP_TITLE + 0.15;
+    if (rule) rule.style.animationDelay = t.toFixed(2) + 's';
+    t += 0.35;
+    t += splitLetters(sub, STEP_SUB, t) * STEP_SUB + 0.3;
+    if (ar) ar.style.animationDelay = t.toFixed(2) + 's';
   })();
+</script>
+
+<script>
+  // MATH COLLABORATION
+  // Clicking the sidebar button opens the access code modal (the same one the teacher cards use).
+  // The code is NOT in this page: the Apps Script checks it (action=teacherAccess, group=math-collab).
+  // Only after the server accepts it (and sends the folder) is the section shown. Its folders and files are then drawn
+  // by the same folder browser as the teacher portfolios, so every sub-folder opens in THIS panel.
+  var mathCollabBtn = document.getElementById('mathCollabBtn');
+  var collabPending = null;           // token of the modal that is currently open for MATH COLLABORATION
+
+  var collabBrowser = createFolderBrowser({
+    section: document.getElementById('mathcollab'),
+    crumbs: document.getElementById('collabCrumbs'),
+    list: document.getElementById('collabList'),
+    frame: document.getElementById('collabFrame'),
+    openLink: document.getElementById('collabOpen')
+  });
+
+  // folderId = the MATH COLLABORATION folder, code = the access code that was just accepted
+  function openMathCollab(folderId, code) {
+    // Leaving the sheet view while editing? Ask first, then drop the unsaved edits (same rule as the other sidebar buttons).
+    if (editMode) {
+      if (!confirmDiscardEdits()) return;
+      rerenderCurrentView();
+    }
+    showSection('mathcollab');
+
+    // keep the sidebar highlight in step with what is on screen
+    document.querySelectorAll('.sidebar .menu-content').forEach(function (mc) { mc.classList.remove('active'); });
+    var mc = mathCollabBtn.querySelector('.menu-content');
+    if (mc) mc.classList.add('active');
+
+    collabBrowser.open({ code: code, groupId: 'math-collab', teacher: '' }, { id: folderId, name: 'MATH COLLABORATION' });
+  }
+
+  if (mathCollabBtn) {
+    mathCollabBtn.addEventListener('click', function () {
+      var token = {};
+      collabPending = token;
+      showCodeModal('collab', 'ENTER ACCESS CODE', 'Enter the access code to open this folder', function () {
+        if (collabPending === token) collabPending = null;      // closed (cancelled or accepted)
+      }, { label: '', name: 'MATH COLLABORATION' });
+    });
+  }
+
+  // Called by submitCode() when the modal is in 'collab' mode.
+  function submitCollabCode(raw) {
+    var token = collabPending;
+    if (!token) return;
+
+    var code = raw.trim().toUpperCase();
+    codeError.textContent = '';
+    codeSubmit.disabled = true;
+    codeSubmit.textContent = 'CHECKING...';
+
+    var url = SCRIPT_URL + '?action=teacherAccess&code=' + encodeURIComponent(code) +
+              '&group=' + encodeURIComponent('math-collab');
+
+    fetch(url)
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        codeSubmit.disabled = false;
+        codeSubmit.textContent = 'SUBMIT';
+        if (collabPending !== token) return;          // the modal was closed while checking
+
+        if (data && data.success) {
+          if (data.folderId) {
+            closeCodeModal();
+            openMathCollab(data.folderId, code);      // only now is the folder shown
+          } else {
+            // no folder (or the Apps Script could not read Drive: it says why in folderError)
+            codeError.textContent = data.folderError || 'Code accepted, but no folder is linked for MATH COLLABORATION yet.';
+          }
+        } else {
+          rejectCode(data && data.error ? data.error : 'Invalid access code. Try again.');
+        }
+      })
+      .catch(function (err) {
+        codeSubmit.disabled = false;
+        codeSubmit.textContent = 'SUBMIT';
+        codeError.textContent = 'Could not reach the server. Check your connection.';
+        console.error('Math Collaboration access check failed:', err);
+      });
+  }
 </script>
 
   </body>
